@@ -1,2 +1,2 @@
 # ScottsML
-This repository contains my original Machine Learning code.
+This repository contains my publicly available Machine Learning code.

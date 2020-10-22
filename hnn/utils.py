@@ -7,6 +7,9 @@ import os
 import smtplib
 import uuid 
 
+''' Helper functions used throughout the HNN code. The main function is get_args, which parses the command line and its
+    myriad options.  '''
+
 #from __future__ import print_function
 from email.message import EmailMessage
 from sys import getsizeof, stderr
@@ -56,8 +59,6 @@ def total_size(o, handlers={}, verbose=False):
         return s
 
     return sizeof(o)
-
-
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -168,11 +169,6 @@ def get_args():
     parser.set_defaults(feature=True)
 
     return parser.parse_args()
-
-#def showmem(msg):
-#    process = psutil.Process(os.getpid())
-#    gb = process.memory_info().rss / (1024**3)
-#    logmsg(f"{msg}. memory: {gb:.2f}G")
 
 def printmem():
     logmsg("all gc objects:")

@@ -5,11 +5,15 @@ import torch.distributed as dist
 from nail.hnn.utils import logmsg
 
 class HNN(BLNN):
+    ''' This class is an extension of the Baseline Neural Network (BLNN) class.  The "special sauce" of
+        HNN lies within time_derivative(), where the symplectic magic happens. '''
+
     def __init__(self,  d_in, d_hidden, d_out, activation_fn):
         super(HNN, self).__init__(d_in, d_hidden, d_out, activation_fn)
         self.device = None
 
     def forward(self, x):
+        ''' Call the BLNN forward(), and then check to make sure the network output is 2D. '''
         y = super().forward(x)
         assert y.dim() == 2 and y.shape[1] == self.d_out
         ysplit = y.split(1, 1)
@@ -29,8 +33,7 @@ class HNN(BLNN):
         return (dHdx, dxdH)
 
     def validate(self, args, test_data, device):
-        ''' Run the test input through the model, to calculate and return 
-            its loss. '''
+        ''' Run the test input through the model, to calculate and return its loss. '''
         self.eval()
         if args.input_noise != '':
           npnoise = np.array(args.input_noise, dtype=np.float32)
@@ -39,17 +42,5 @@ class HNN(BLNN):
             dHdx_hat, dxdH_hat = self.time_derivative(x)
             if args.input_noise != '':
                 dHdx_hat += noise * torch.randn(*x.shape).to(device)  # add noise, maybe
-
             return self.loss_fn(args, dHdx, dHdx_hat, x, dxdH_hat).item()
 
-    def custom_loss(args, dHdx, dHdx_hat, x, dxdH_hat):
-        ''' Combine energy with position, for a custom mixture of phase- and coordinate-space 
-            losses.  '''
-        Hloss = torch.nn.MSELoss(dHhat, dH)
-        num_pairs = x.shape[1] // 2
-        q = x[:num_pairs]
-        p = x[num_pairs:]
-        xloss = torch.nn.MSELoss(xhat, x)
-        loss = Hloss + args.gamma * qloss
-
-        return loss

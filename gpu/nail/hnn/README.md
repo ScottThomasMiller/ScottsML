@@ -7,9 +7,7 @@ To generate training data, use ndshogen.sh in ScottsML/nail/hnn/sho.  Edit the s
 To run the experiments, first edit the sho/ndshox.sh script to set your save_dir and name (input filename) parameters, number of GPUs, etc.  Next add the gpu directory to your PYTHONPATH, and then run script.  For example:
 
 export PYTHONPATH=/home/scottmiller/git/ScottsML/gpu:$PYTHONPATH
-
 cd sho
-
 ./ndshox.sh --seed 42
 
 

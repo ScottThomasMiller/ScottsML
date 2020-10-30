@@ -6,7 +6,7 @@ import torch.distributed as dist
 import sys
 
 class SimplePendulumHNN(HNN):
-    ''' Extend the simple harmonic oscillator (SHO) HNN class by overriding time_derivative(), to perform the cylinder mapping. ''''
+    ''' Extend the simple harmonic oscillator (SHO) HNN class by overriding time_derivative(), to perform the cylinder mapping. '''
     def __init__(self,  d_in, d_hidden, d_out, activation_fn):
         super(SimplePendulumHNN, self).__init__(d_in, d_hidden, d_out, activation_fn)
 

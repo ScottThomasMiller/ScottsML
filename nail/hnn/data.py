@@ -63,22 +63,22 @@ class DynamicalSystem():
        ''' Calculate and return state(t+1) of the given state(t) vector.  
            First compute the symplectic gradient vector for the given state vector using
            the differential equations of the Hamiltonian, and then apply that gradient
-           to the current state via matrix multiplication.
-        deriv_sympy = np.zeros_like(state)
-        for i in range(self.sys_dim):
-            deriv_sympy[i] = self.sys_eqns[i](state)
+           to the current state via matrix multiplication. '''
+       deriv_sympy = np.zeros_like(state)
+       for i in range(self.sys_dim):
+           deriv_sympy[i] = self.sys_eqns[i](state)
 
-        deriv = np.array(deriv_sympy, dtype=np.float32)
+       deriv = np.array(deriv_sympy, dtype=np.float32)
 
-        m1 = np.array([[0.0, 1.0], [-1.0, 0.0]])
-        m2 = np.eye(int(self.sys_dim / 2))
-        m3 = np.kron(m1, m2)
-        m4 = np.matmul(m3, deriv)
-        # m4 looks like -- [dH/dp1, dH/dp2, -dH/dq1, -dH/dq2]
-        return m4.reshape(-1)
+       m1 = np.array([[0.0, 1.0], [-1.0, 0.0]])
+       m2 = np.eye(int(self.sys_dim / 2))
+       m3 = np.kron(m1, m2)
+       m4 = np.matmul(m3, deriv)
+       # m4 looks like -- [dH/dp1, dH/dp2, -dH/dq1, -dH/dq2]
+       return m4.reshape(-1)
 
     def integrate_one_step(self, func, y0, t, dt, order=2):
-        ''' This function is called by integrate_symplectic. "
+        ''' This function is called by integrate_symplectic. '''
         n_dim = len(y0)
         u, v = np.array(y0[:int(n_dim / 2)]), np.array(y0[int(n_dim / 2):])
 
@@ -107,7 +107,7 @@ class DynamicalSystem():
         return np.concatenate((u_next, v_next), axis=None)
 
     def integrate_symplectic(self, func, dt, t_span, y0, order=2):
-        ''' This function is used by get_orbit(), when the user selects symplectic integration. "
+        ''' This function is used by get_orbit(), when the user selects symplectic integration. '''
         print('order = ', order)
         tpoints = int((t_span[1] - t_span[0]) / dt)
         t_eval = np.linspace(t_span[0], t_span[1], tpoints)
@@ -122,7 +122,7 @@ class DynamicalSystem():
         return np.array(sol, dtype=np.float32), t_observed
 
     def update_fn_symplectic(self, t, v, u):
-        ''' This function is used by get_orbit(), when the user selects symplectic integration. "
+        ''' This function is used by get_orbit(), when the user selects symplectic integration. '''
         if self.external_update_fn is None:
             dudv = self.update_fn(t, state=np.concatenate((u, v), axis=None))
 
@@ -138,7 +138,7 @@ class DynamicalSystem():
         return deriv
 
     def rk4_integrate(self, fun, y0, t_span, dt, t_eval=1):
-        ''' This function is used by get_orbit(), when the user selects rk4 integration. "
+        ''' This function is used by get_orbit(), when the user selects rk4 integration. '''
         t1 = t_span[0]
         t2 = t_span[1]
         t_integrate = np.arange(t1, t2, dt, dtype=np.float32)

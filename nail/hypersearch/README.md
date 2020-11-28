@@ -4,7 +4,9 @@ The main file is hypers.py.  It contains the GA, and it uses bsub and bjobs to l
 be run as a job on the cluster.
 
 To use hypers.py, modify hypers.job to update the hardcoded path within.  Launch hypers.job with: 
+
 bsub < hypers.job
+
 The main job will launch hypers.py, which itself will launch all the training jobs.
 Each training job runs hypers.sh.  The hypers.sh file can contain anything you want, so long as it trains your PyTorch module and accepts as command-line parameters the following required values:
 - learn_rate

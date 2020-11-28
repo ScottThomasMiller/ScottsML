@@ -1,6 +1,9 @@
-''' Methods for running NAIL models across distributed GPUs via PyTorch's Distributed Data Parallel (DDP).
+''' run.py
 
-    With guidance from https://pytorch.org/tutorials/intermediate/ddp_tutorial.html
+    Functions for running NAIL models on a single host in CPU mode.
+    
+    Author: Scott Miller, Nonlinear A.I. Lab (NAIL), NCSU
+
 '''
 
 from nail.hnn.blnn import BLNN
@@ -14,11 +17,9 @@ import os
 import sys
 import tempfile
 import torch
-import torch.distributed as dist
 import torch.nn as nn
 import torch.optim as optim
 import torch.multiprocessing as mp
-from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data import DataLoader
 import signal
 
@@ -61,7 +62,7 @@ def append_stats(stats_list, stats):
     return estats
 
 def to_tensor(input_data):
-    ''' Copy input_data from CPU to GPU: '''
+    ''' Convert input data to tensors. '''
     len_train = input_data['coords'].shape[0]
     coords = torch.tensor(input_data['coords'], dtype=torch.float32, requires_grad=True)
     dcoords = torch.tensor(input_data['dcoords'], dtype=torch.float32, requires_grad=True)
@@ -108,8 +109,7 @@ def rank0log(rank, msg):
         logmsg(msg)
 
 def load_data(args):
-    ''' Return the dataset from the given DyanimcalSystem, for the given or current GPU.
-    '''
+    ''' Return the dataset from the given DyanimcalSystem.  '''
     tspan = []
     for t in args.tspan:
         tspan.append(t)

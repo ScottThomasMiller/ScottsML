@@ -1,4 +1,4 @@
-This is the hypers folder.  Hypers is a Python class which uses a genetic algorithm (GA) to perform a hyperparameter search for any PyTorch model, on the HPC cluster at NCSU.  The tournaments within each epoch are run in parallel on the cluster, yielding a hyuge speedup.
+This is the hypers folder.  Hypers is a Python class which uses a genetic algorithm (GA) to perform a hyperparameter search for any PyTorch model, on the HPC cluster at NCSU.  The tournaments within each epoch are run in parallel on the cluster, yielding a huge speedup.  The GA converges when its population is completely cached.
 
 The main file is hypers.py.  It contains the GA, and it uses bsub and bjobs to launch and monitor the training jobs.  Because it might take hours to complete, hypers.py should also
 be run as a job on the cluster.

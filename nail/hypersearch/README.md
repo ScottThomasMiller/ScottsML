@@ -14,16 +14,16 @@ Each training job runs hypers.sh.  The hypers.sh file can contain anything you w
 - cid
 
 The learn_rate should be a small float value, less than 1.0.  The optim value is the name of a PyTorch optimizer, such as 'Adam'.  The batch_size should be a modest-sized integer.
-The cid and gid parameters are placeholders for hypers.py.
+The cid and gid parameters are placeholders for hypers.py, which will provide the values when it generates the training job files.
 The training module must upon completion print the following lines to stdout, so that hypers.py can collect its results:
 
-GID: <gid>
+GID: [gid]
 
-CID: <cid>
+CID: [cid]
 
-LOSS: <final validation loss value>
+LOSS: [final validation loss value]
 
-HOSTNAME: <hostname where the training job ran>
+HOSTNAME: [hostname where the training job ran]
 
 OK
 

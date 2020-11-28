@@ -28,4 +28,4 @@ HOSTNAME: <hostname where the training job ran>
 OK
 
 
-That last "OK" indicates successful completion of the training job. See hypers.sh for an example of what you might put in script.
+That last "OK" indicates successful completion of the training job. See hypers.sh for an example of what you might put in the training script.

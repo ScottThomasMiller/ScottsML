@@ -1,0 +1,8 @@
+#!/bin/tcsh
+#BSUB -n 1
+#BSUB -W 1440
+#BSUB -J runhypers
+#BSUB -R span[hosts=1]
+#BSUB -o runhypers.out
+#BSUB -e runhypers.err
+python /home/stmille3/src/basic/nail/hnn/pendulum/simple/runhypers.py 

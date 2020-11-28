@@ -1,4 +1,9 @@
-''' Methods for running NAIL models on a single host in CPU mode.
+''' run.py
+
+    Functions for running NAIL models on a single host in CPU mode.
+    
+    Author: Scott Miller, Nonlinear A.I. Lab (NAIL), NCSU
+
 '''
 
 from nail.hnn.blnn import BLNN

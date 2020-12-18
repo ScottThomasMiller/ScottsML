@@ -1,0 +1,1 @@
+This is the Hamiltonian Neural Network (HNN) code I've written for NAIL.  The HNN is a multi-layer perceptron (MLP) with an inductive bias.  The bias is the symplectic gradient of the network outputs, which is used to calculate loss instead of the actual outputs themselves.  It allows the network to learn both ordered and chaotic trajectories of conservative dynamical systems.

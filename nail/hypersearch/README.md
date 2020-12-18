@@ -12,11 +12,14 @@ Each training job runs hypers.sh.  The hypers.sh file can contain anything you w
 - learn_rate
 - optim
 - batch_size
+- hidden_dim
 - gid
 - cid
 
 The learn_rate should be a small float value, less than 1.0.  The optim value is the name of a PyTorch optimizer, such as 'Adam'.  The batch_size should be a modest-sized integer.
 The cid and gid parameters are placeholders for hypers.py, which will provide the values when it generates the training job files.
+The hidden_dim is a space-separated sequence of integers describing the dimensions of the network, one integer for each hidden layer specifying the width of that layer.  For example a 5x3x2 network would be: "--hidden_dim 5 3 2".
+
 The training module must upon completion print the following lines to stdout, so that hypers.py can collect its results:
 
 GID: [gid]

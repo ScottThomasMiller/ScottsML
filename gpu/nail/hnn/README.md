@@ -1,5 +1,6 @@
 This is my GPU code for the Hamiltonian Neural Network (HNN) which learns the trajectories of the N-Dimensional Simple Harmonic Oscillator (NDSHO).  The code runs in distributed-data parallel mode using PyTorch, yielding a very nice speedup over conventional CPU or single-GPU implementations.
 
+The module data.py is a fork of a fork of code from the Greydanus team at Google. It generates the simulated training data, and forecasts orbits using either an integrator or the trained model.
 
 To generate training data, use ndshogen.sh in ScottsML/nail/hnn/sho.  Edit the script first, to set the save_dir and name (output filename) parameters.
 

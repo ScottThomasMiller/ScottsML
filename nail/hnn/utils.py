@@ -1,6 +1,6 @@
 import argparse
 import gc
-import pickle5 as pickle
+#import pickle5 as pickle
 import numpy as np
 import datetime
 import os
@@ -69,6 +69,7 @@ def get_label(args):
 
     return label
     
+'''
 def to_pickle(thing, path, mode='wb'):  # save something
     with open(path, mode) as handle:
         pickle.dump(thing, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -78,6 +79,7 @@ def from_pickle(path):  # load something
     with open(path, 'rb') as handle:
         thing = pickle.load(handle)
     return thing
+'''
 
 def L2_loss(u, v):
     return (u - v).pow(2).mean()

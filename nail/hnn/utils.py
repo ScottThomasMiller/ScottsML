@@ -1,14 +1,11 @@
 import argparse
 import gc
-#import pickle5 as pickle
+import pickle
 import numpy as np
 import datetime
 import os
 import smtplib
 import uuid 
-
-''' Helper functions used throughout the HNN code. The main function is get_args, which parses the command line and its
-    myriad options.  '''
 
 #from __future__ import print_function
 from email.message import EmailMessage
@@ -60,6 +57,8 @@ def total_size(o, handlers={}, verbose=False):
 
     return sizeof(o)
 
+
+
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def get_label(args):
@@ -69,7 +68,6 @@ def get_label(args):
 
     return label
     
-'''
 def to_pickle(thing, path, mode='wb'):  # save something
     with open(path, mode) as handle:
         pickle.dump(thing, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -79,7 +77,6 @@ def from_pickle(path):  # load something
     with open(path, 'rb') as handle:
         thing = pickle.load(handle)
     return thing
-'''
 
 def L2_loss(u, v):
     return (u - v).pow(2).mean()
@@ -90,6 +87,8 @@ def logmsg(vmsg):
 
 def get_args():
     parser = argparse.ArgumentParser(description=None)
+    parser.add_argument('--config_filename', 
+                        type=str, help='config filename')
     parser.add_argument('--hamiltonian',
                         type=str, help='Hamiltonian of the system')
     parser.add_argument('--clip', type=float, default=0,
@@ -98,6 +97,10 @@ def get_args():
                         type=int, help='number of bodies/particles in the system')
     parser.add_argument('--exponent', default=2,
                         type=int, help='exponent of the Hamiltonian for NDSHO')
+    parser.add_argument('--cid', 
+                        type=int, help='contestant ID for hyperparameter search')
+    parser.add_argument('--gid', 
+                        type=int, help='group ID for hyperparameter search')
     parser.add_argument('--num_forecasts', default=32,
                         type=int, help='number of forecasts per experiment')
     parser.add_argument('--num_gpus', default=4,
@@ -171,6 +174,11 @@ def get_args():
     parser.set_defaults(feature=True)
 
     return parser.parse_args()
+
+#def showmem(msg):
+#    process = psutil.Process(os.getpid())
+#    gb = process.memory_info().rss / (1024**3)
+#    logmsg(f"{msg}. memory: {gb:.2f}G")
 
 def printmem():
     logmsg("all gc objects:")

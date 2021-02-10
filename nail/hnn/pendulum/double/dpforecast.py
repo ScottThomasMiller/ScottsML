@@ -15,11 +15,11 @@ import nail.hnn.run as run
 def model_update(t, state, model):
     state = state.reshape(-1,6)
     deriv = np.zeros_like(state)
-    np_x = state 
-    x = torch.Tensor( np_x, requires_grad=True, dtype=torch.float32)
-    dx_hat = model.time_derivative(x)
-    deriv= dx_hat.detach().data.numpy() * 100.0
-    
+    np_x = state
+    x = torch.tensor( np_x, requires_grad=True, dtype=torch.float32)
+    dx_hat = model.time_derivative(x) 
+    deriv= dx_hat.detach().data.numpy() * 100.00
+
     return deriv.reshape(-1)
 
 def gen_dynsys(args):
@@ -102,7 +102,7 @@ def write_orbits(args, orbits, i):
 
     fname = f'{args.save_dir}/orbit_model_{i}.csv'
     logmsg(f'writing orbit file {fname}')
-    df = pd.DataFrame(xy2q(model_orbit).T, columns=colnames)
+    df = pd.DataFrame(xy2q(model_orbit.T).T, columns=colnames)
     df.to_csv(fname, index=False)
 
 def forecast(args, model, dpsys):

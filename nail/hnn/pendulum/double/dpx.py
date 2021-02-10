@@ -2,41 +2,39 @@
 import math 
 import torch
 import numpy as np
+import pandas as pd
 
 #NAIL modules:
-from blnn import BLNN
-from hnn import HNN
-import utils 
-import dpdata as dpdata
+#nail.hnn.modules:
+from nail.hnn.blnn import BLNN
+from dphnn import DoublePendulumHNN
 from dpdata import DoublePendulumDS
-from utils import from_pickle, to_pickle, logmsg
-import train
-from torch.nn.parallel import DataParallel 
+from nail.hnn.utils import *
+import nail.hnn.run as run
 
 def model_update(t, state, model):
     state = state.reshape(-1,6)
     deriv = np.zeros_like(state)
     np_x = state 
     x = torch.tensor( np_x, requires_grad=True, dtype=torch.float32)
-    dx_hat = model.module.time_derivative(x)
-    deriv= dx_hat.detach().data.numpy()
+    dx_hat = model.time_derivative(x)
+    deriv = dx_hat.detach().data.numpy() * 100.0
     
     return deriv.reshape(-1)
 
 def gen_dynsys(args):
-    tpoints = abs(int((1.0 / args.dsr) * (args.tspan[1]-args.tspan[0])))
-    spsys = DoublePendulumDS(sys_hamiltonian=args.hamiltonian,state_symbols=args.state_symbols,
-                          tspan=args.tspan, timesteps=tpoints, integrator=args.integrator_scheme,
-                          symplectic_order=4)
-    spsys.integrator = "RK45"
+    ''' Create and return a DoublePendulumDS object, for generating orbits and ICs. '''
+    dpsys = DoublePendulumDS(args)
+    dpsys.tspan = args.tspan
+    dpsys.time_points = abs(int((1.0 / args.dsr) * (dpsys.tspan[1]-dpsys.tspan[0])))
+    dpsys.integrator = "RK45"
 
-    return spsys
+    return dpsys
 
 def load_hnn_model(path):
     saved_model = from_pickle(path)
     args = saved_model['args']
-    model = HNN(d_in=6, d_hidden=args.hidden_dim, d_out=1, activation_fn=args.activation_fn)
-    model = DataParallel(model)
+    model = DoublePendulumHNN(d_in=6, d_hidden=args.hidden_dim, d_out=1, activation_fn=args.activation_fn)
     model.load_state_dict(saved_model['model'])
     model.eval()
 
@@ -46,16 +44,15 @@ def load_base_model(path):
     saved_model = from_pickle(path)
     args = saved_model['args']
     model = BLNN(d_in=6, d_hidden=args.hidden_dim, d_out=6, activation_fn=args.activation_fn)
-    model = DataParallel(model)
     model.load_state_dict(saved_model['model'])
     model.eval()
 
     return (args, model)
 
-def load_models(label):
+def load_models(args, label):
     base_args, base_model, hnn_args, hnn_model = (None, None, None, None)
-    base_path = "save/baseline_model_{}.trch".format(label)
-    hnn_path = "save/hnn_model_{}.trch".format(label)
+    base_path = f"{args.save_dir}/baseline_model_{label}.trch"
+    hnn_path = f"{args.save_dir}/hnn_model_{label}.trch"
     base_args, base_model = load_base_model(base_path)
     hnn_args, hnn_model = load_hnn_model(hnn_path)
     models = (base_args, base_model, hnn_args, hnn_model)
@@ -74,34 +71,33 @@ def xy2q(state_xy):
     
     return np.row_stack((q1, q2, p1, p2))
 
-def gen_orbits(spsys, base_model, hnn_model):
-    # chaotic orbit #0 from dp-dataset-dsr1e-02-tspan0_100-traj125-xy-piover2.pkl:
-    save_state_xyp = np.asarray([ 0.54108224, -0.84096968,  0.42370142, -0.90580191,  1.54895556, -0.03376365])
+def gen_orbits(dpsys, base_model, hnn_model, state0):
+    save_state_xyp = np.zeros(6)
+    save_state_xyp[0] = np.cos(state0[0])
+    save_state_xyp[1] = np.sin(state0[0])
+    save_state_xyp[2] = np.cos(state0[1])
+    save_state_xyp[3] = np.sin(state0[1])
+    save_state_xyp[4] = state0[2]
+    save_state_xyp[5] = state0[3]
     save_state_qp = xy2q(save_state_xyp)
     base_orbit, base_settings = (None, None)
     if base_model is not None:
         base_model.eval()
     hnn_model.eval()
     
-    logmsg("calculating ground truth orbit")
-    spsys.external_update_fn = None
+    dpsys.external_update_fn = None
     state = save_state_qp
-    ground_orbit, ground_settings = spsys.get_orbit(state)
-    logmsg("ground shape: {}".format(ground_orbit.shape))
+    ground_orbit, ground_settings = dpsys.get_orbit(state)
 
-    logmsg("calculating HNN orbit")
     update_fn = lambda t, y0: model_update(t, y0, hnn_model)
-    spsys.external_update_fn = update_fn
+    dpsys.external_update_fn = update_fn
     state = save_state_xyp
-    hnn_orbit, hnn_settings = spsys.get_orbit(state)
-    logmsg("hnn shape: {}".format(hnn_orbit.shape))
+    hnn_orbit, hnn_settings = dpsys.get_orbit(state)
 
-    logmsg("calculating baseline orbit")
     update_fn = lambda t, y0: model_update(t, y0, base_model)
-    spsys.external_update_fn = update_fn
+    dpsys.external_update_fn = update_fn
     state = save_state_xyp
-    base_orbit, base_settings = spsys.get_orbit(state)
-    logmsg("base shape: {}".format(base_orbit.shape))
+    base_orbit, base_settings = dpsys.get_orbit(state)
     
     orbits = (ground_orbit, ground_settings, base_orbit, base_settings, hnn_orbit, hnn_settings)
     return orbits
@@ -120,7 +116,7 @@ def orbit_qp(orbit_xyp):
     
     return orbit_qp
 
-def write_qpfile(orbit_qp, energy):
+def write_qpHfile(orbit_qp, energy):
   ''' Write the forecasted canonical coordinates and their respective energies to a txt file.
        {q1, q2, p1, p2, H}  '''
   with open('dp-HNN-q1q2p1p2H.tsv','w') as ofile:
@@ -132,66 +128,123 @@ def write_qpfile(orbit_qp, energy):
       H  = energy[i]
       ofile.write(f'{q1}\t{q2}\t{p1}\t{p2}\t{H}\n')
 
+def write_orbits(args, ground_orbit, base_orbit, hnn_orbit, npoints):
+    ''' Write the ground-truth and forecasted orbits to separate .csv files. '''
+    colnames = ['q1','q2','p1','p2']
+    df = pd.DataFrame(ground_orbit.T, columns=colnames)
+    df.to_csv(f'{args.save_dir}/orbits_xyp_ground_npts{npoints}.csv', index=False)
+    df = pd.DataFrame(xy2q(base_orbit).T, columns=colnames)
+    df.to_csv(f'{args.save_dir}/orbits_xyp_base_npts{npoints}.csv', index=False)
+    df = pd.DataFrame(xy2q(hnn_orbit).T, columns=colnames)
+    df.to_csv(f'{args.save_dir}/orbits_xyp_hnn_npts{npoints}.csv', index=False)
+
+def forecast(models, dpsys, args, npoints):
+    ''' Generate multiple orbits, each with its own IC, for both NN and HNN.  
+        Concatenate the NN orbits together, and the HNN orbits together, and
+        then calculate and write the stats of the concatenated orbits. ''' 
+    base_args, base_model, hnn_args, hnn_model = models
+    state0 = dpsys.random_config()
+    orbits = gen_orbits(dpsys, base_model, hnn_model, state0)
+    gorbits, gsettings, borbits, bsettings, horbits, hsettings = orbits
+    for i in range(args.num_forecasts):
+        state0 = dpsys.random_config()
+        orbits = gen_orbits(dpsys, base_model, hnn_model, state0)
+        ground_orbit, ground_settings, base_orbit, base_settings, hnn_orbit, hnn_settings = orbits
+        write_orbits(args, ground_orbit, base_orbit, hnn_orbit, npoints)
+        gorbits = np.concatenate((gorbits, ground_orbit), axis=1)
+        borbits = np.concatenate((borbits, base_orbit), axis=1)
+        horbits = np.concatenate((horbits, hnn_orbit), axis=1)
+    logmsg(f'shape gorbits: {gorbits.shape} borbits: {borbits.shape} horbits: {horbits.shape}')
+    genergy = dpsys.get_energy(gorbits)
+    benergy = dpsys.get_energy(xy2q(borbits))
+    henergy = dpsys.get_energy(xy2q(horbits))
+    x = borbits[0,:]
+    p = borbits[2,:]
+    x = horbits[0,:]
+    p = horbits[2,:]
+    bdEfinal = abs(genergy[-1] - benergy[-1])
+    bdEavg = np.absolute(genergy - benergy).mean()
+    hdEfinal = abs(genergy[-1] - henergy[-1])
+    hdEavg = np.absolute(genergy - henergy).mean()
+    E = genergy[-1]
+    f = open(f"sp_{args.num_bodies}D_dE_seed-{args.seed}.tsv", "a")
+    f.write("{}\t{}\t{}\t{}\t{}\t{}\n".format(npoints, E, bdEfinal, bdEavg, hdEfinal, hdEavg))
+    f.close()
+    horbits_qp = orbit_qp(horbits)
+    write_qpHfile(horbits_qp, henergy)
+
+def train(model, args, train_data, test_data):
+  ''' Train the given model using the given hyperparameters. Save its best model as well as its
+      final model.  Return training stats. '''
+  paths = run.prep_paths(args, model.run_label, device=-1)
+  lowest_loss = 100.0
+  optimizer = run.get_optimizer(model, args)
+  save_model = {'args': args, 'model': model.state_dict()}
+  for e in range(args.epochs):
+    stats = model.etrain(args, train_data, optimizer)
+    stats['testing'] = [model.validate(args, test_data, device=-1)]
+    train_loss = stats['training'][-1]
+    test_loss = stats['testing'][-1]
+    grad_norm = stats['grad_norms'][-1]
+    grad_std = stats['grad_stds'][-1]
+    save_model['model'] = model.state_dict()
+    to_pickle(save_model, paths['save_model'])
+    #torch.save(save_model, paths['save_model'])
+    if test_loss < lowest_loss:
+      lowest_loss = test_loss
+      to_pickle(save_model, paths['save_lowest'])
+      #torch.save(save_model, paths['save_lowest'])
+    logmsg(f"epoch {e} loss->train:{train_loss:.4e} test:{test_loss:.4e} " + \
+           f"grads->norm:{grad_norm:.4e} std:{grad_std:.4e}")
+  logmsg(f"lowest model: {paths['save_lowest']}")
+
+  return stats
+
 if __name__ == "__main__":
   in_dim = 6
-  args = utils.get_args()
-  args.epochs = 16
+  args = get_args()
+  #args.epochs = 16
+  args.epochs = 32
   args.state_symbols = ['q1','q2','p1','p2']
   args.name = "dp-dataset-dsr1e-02-tspan0_100-traj125-xy-p1pi"
   args.hamiltonian="-(p1**2 + 2*p2**2 - 2*p1*p2*cos(q1 - q2) + (-3 + cos(2*(q1 - q2)))*(2*cos(q1) + cos(q2))) / (-3 + cos(2*(q1 - q2)))"
   args.test_pct = 1
   args.master_port = 11571
   args.activation_fn = 'Tanh'
-  args.save_dir = 'save'
   args.learn_rate = 1e-03 
-  args.tspan = [0, 7]  
-  args.dsr = 0.0546875  
+  args.tspan = [0, 100]
+  args.dsr = 0.01
   args.batch_size = 1 
   args.hidden_dim = [32, 32] 
   args.train_pct = 0 
   torch.manual_seed(args.seed)
   np.random.seed(args.seed)
-  spsys = gen_dynsys(args)
+  dpsys = gen_dynsys(args)
   logmsg('args:\n{}'.format(args))
 
   #for power in range(7,16):
-  for power in range(15,16):
-    save_label = utils.get_label(args)
+  #for power in range(15,16):
+  for power in range(16,17):
+    save_label = get_label(args)
     npoints = 2**power
     args.train_pts = npoints
+    train_data, test_data = run.prep_data(args)
     bout_dim = in_dim
     hout_dim = 1
 
     args.model = 'baseline'
     bmodel = BLNN(in_dim, args.hidden_dim, bout_dim, args.activation_fn)
-    bmodel.run_label = save_label
-    bmodel.model = args.model
-    train.run_model(bmodel, args)
+    bmodel.set_label(save_label)
+    logmsg('training baseline')
+    train(bmodel, args, train_data, test_data)
 
     args.model = 'hnn'
-    hmodel = HNN(in_dim, args.hidden_dim, hout_dim, args.activation_fn)
-    hmodel.run_label = save_label
-    hmodel.model = args.model
-    train.run_model(hmodel, args)
+    hmodel = DoublePendulumHNN(in_dim, args.hidden_dim, hout_dim, args.activation_fn)
+    hmodel.set_label(save_label)
+    logmsg('training HNN')
+    train(hmodel, args, train_data, test_data)
 
     logmsg('generating orbits')
-    models = load_models(save_label)
-    base_args, base_model, hnn_args, hnn_model = models
-    base_args.tspan = [0, 100]
-    hnn_args.tspan = [0, 100]
-    orbits = gen_orbits(spsys, base_model, hnn_model)
-    ground_orbit, ground_settings, base_orbit, base_settings, hnn_orbit, hnn_settings = orbits
-    genergy = spsys.get_energy(ground_orbit)
-    base_orbit_qp = orbit_qp(base_orbit)
-    benergy = spsys.get_energy(base_orbit_qp)
-    hnn_orbit_qp = orbit_qp(hnn_orbit)
-    henergy = spsys.get_energy(hnn_orbit_qp)
-    bdEfinal = abs(genergy[-1] - benergy[-1])
-    bdEavg = np.absolute(genergy - benergy).mean()
-    hdEfinal = abs(genergy[-1] - henergy[-1])
-    hdEavg = np.absolute(genergy - henergy).mean()
-    E = genergy[-1]
-    f = open("nn_vs_hnn_energies_seed-{}.tsv".format(args.seed), "a")
-    f.write("{}\t{}\t{}\t{}\t{}\t{}\n".format(npoints, E, bdEfinal, bdEavg, hdEfinal, hdEavg))
-    f.close()
-    write_qpfile(hnn_orbit_qp, henergy)
+    models = load_models(args, save_label)
+    logmsg('forecasting orbits');
+    forecast(models, dpsys, args, npoints)

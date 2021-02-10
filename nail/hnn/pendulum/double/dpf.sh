@@ -1,4 +1,4 @@
-python3 dpforecast.py --seed 929233  \
+python dpforecast.py --seed 929233  \
   --epochs 16 \
   --state_symbols 'q1' 'q2' 'p1' 'p2'  \
   --name "dp-dataset-dsr1e-02-tspan0_100-traj125-xy-p1pi" \

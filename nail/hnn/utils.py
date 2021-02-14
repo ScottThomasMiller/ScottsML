@@ -111,6 +111,8 @@ def get_args():
                         type=int, help='Input dimension')
     parser.add_argument('--hidden_dim',nargs="*", default=[200, 200],
                         type=int, help='hidden layers dimension')
+    parser.add_argument('--beta', default=0.5,
+                        type=float, help='beta for custom loss')
     parser.add_argument('--momentum', default=0,
                         type=float, help='momentum for SGD')
     parser.add_argument('--learn_rate', default=1e-03,
@@ -125,6 +127,8 @@ def get_args():
                         type=int, help='use pct of total available training data'),
     parser.add_argument('--train_pts', default=0,
                         type=int, help='use number of total available training data'),
+    parser.add_argument('--npower', default=16,
+                        type=int, help='power of 2 for determining number of training points')
     parser.add_argument('--master_port', default=10101,
                         type=int, help='TCP port number for master process'),
     parser.add_argument('--optim', default='Adam',

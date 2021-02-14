@@ -15,9 +15,12 @@ class BLNN(torch.nn.Module):
                   'grad_stds': []}
 
     def custom_loss(self, x, nextx, dxdt, dxdt_hat):
-        nextx_hat = x + dxdt_hat
-        #loss = torch.mean((dxdt - dxdt_hat)**2) + torch.mean((nextx - nextx_hat)**2)
-        loss = torch.mean((nextx - nextx_hat)**2)
+        nextx_hat = x + (dxdt_hat * 0.0001)
+        #loss = (self.beta * torch.mean((dxdt - dxdt_hat)**2)) + \
+        #       ((1.0 - self.beta) * torch.mean((nextx - nextx_hat)**2))
+        loss = torch.mean((self.beta * (dxdt - dxdt_hat)**2) + \
+                         ((1.0 - self.beta) * (nextx - nextx_hat)**2))
+ 
         return loss
 
     def custom_loss_old(outputs, targets, coefficients=None):
@@ -33,7 +36,7 @@ class BLNN(torch.nn.Module):
         
         return total_loss
 
-    def __init__(self, d_in, d_hidden, d_out, activation_fn):
+    def __init__(self, d_in, d_hidden, d_out, activation_fn, beta=0.5):
         super(BLNN, self).__init__()
         self.layers = torch.nn.ModuleList()
         self.nonlinearity = []
@@ -41,6 +44,7 @@ class BLNN(torch.nn.Module):
         self.d_out = d_out
         self.d_hidden = d_hidden
         self.loss_fn = torch.nn.MSELoss()
+        self.beta = beta
 
         if activation_fn == 'Tanh':
             nonlinear_fn = torch.nn.Tanh()
@@ -95,14 +99,13 @@ class BLNN(torch.nn.Module):
                 if args.input_noise != '':
                   dxdt_hat += noise * torch.randn(*x.shape).to(device)  # add noise, maybe
                 #return self.loss_fn(dxdt_hat, dxdt).item()
-                nextx_hat = x + dxdt_hat
-                return self.loss_fn(nextx_hat, nextx).item()
+                #nextx_hat = x + dxdt_hat 
+                #return self.loss_fn(nextx_hat, nextx).item()
+                return self.custom_loss(x, nextx, dxdt, dxdt_hat)
 
     # epoch train:
     def etrain(self, args, train_data, optimizer):
         self.train()
-        torch.manual_seed(args.seed)
-        np.random.seed(args.seed)
         stats = copy.deepcopy(BLNN.stats_dict)
         addnoise = False
         if args.input_noise != '':
@@ -117,8 +120,9 @@ class BLNN(torch.nn.Module):
             if addnoise:
               dxdt_hat += noise * torch.randn(*x.shape).to(torchdev)  # add noise, maybe
             #loss = self.loss_fn(dxdt_hat, dxdt)
-            nextx_hat = x + dxdt_hat
-            loss = self.loss_fn(nextx_hat, nextx)
+            #nextx_hat = x + dxdt_hat 
+            #loss = self.loss_fn(nextx_hat, nextx)
+            loss = self.custom_loss(x, nextx, dxdt, dxdt_hat)
             loss.backward()
             if args.clip != 0:
               clip_grad_norm_(self.parameters(), args.clip)

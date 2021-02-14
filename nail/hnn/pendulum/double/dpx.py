@@ -34,7 +34,7 @@ def gen_dynsys(args):
 def load_hnn_model(path):
     saved_model = from_pickle(path)
     args = saved_model['args']
-    model = DoublePendulumHNN(d_in=6, d_hidden=args.hidden_dim, d_out=1, activation_fn=args.activation_fn)
+    model = DoublePendulumHNN(d_in=6, d_hidden=args.hidden_dim, d_out=1, activation_fn=args.activation_fn, beta=args.beta)
     model.load_state_dict(saved_model['model'])
     model.eval()
 
@@ -43,7 +43,7 @@ def load_hnn_model(path):
 def load_base_model(path):
     saved_model = from_pickle(path)
     args = saved_model['args']
-    model = BLNN(d_in=6, d_hidden=args.hidden_dim, d_out=6, activation_fn=args.activation_fn)
+    model = BLNN(d_in=6, d_hidden=args.hidden_dim, d_out=6, activation_fn=args.activation_fn, beta=args.beta)
     model.load_state_dict(saved_model['model'])
     model.eval()
 
@@ -223,8 +223,7 @@ if __name__ == "__main__":
   logmsg('args:\n{}'.format(args))
 
   #for power in range(7,16):
-  #for power in range(15,16):
-  for power in range(16,17):
+  for power in range(14,15):
     save_label = get_label(args)
     npoints = 2**power
     args.train_pts = npoints
@@ -233,18 +232,17 @@ if __name__ == "__main__":
     hout_dim = 1
 
     args.model = 'baseline'
-    bmodel = BLNN(in_dim, args.hidden_dim, bout_dim, args.activation_fn)
+    bmodel = BLNN(in_dim, args.hidden_dim, bout_dim, args.activation_fn, beta=args.beta)
     bmodel.set_label(save_label)
     logmsg('training baseline')
     train(bmodel, args, train_data, test_data)
 
     args.model = 'hnn'
-    hmodel = DoublePendulumHNN(in_dim, args.hidden_dim, hout_dim, args.activation_fn)
+    hmodel = DoublePendulumHNN(in_dim, args.hidden_dim, hout_dim, args.activation_fn, beta=args.beta)
     hmodel.set_label(save_label)
     logmsg('training HNN')
     train(hmodel, args, train_data, test_data)
 
-    logmsg('generating orbits')
-    models = load_models(args, save_label)
     logmsg('forecasting orbits');
+    models = load_models(args, save_label)
     forecast(models, dpsys, args, npoints)

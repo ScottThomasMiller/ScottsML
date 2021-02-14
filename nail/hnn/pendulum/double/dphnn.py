@@ -8,8 +8,8 @@ from nail.hnn.sho.hnn import HNN
 from nail.hnn.utils import *
 
 class DoublePendulumHNN(HNN):
-    def __init__(self,  d_in, d_hidden, d_out, activation_fn):
-        super(HNN, self).__init__(d_in, d_hidden, d_out, activation_fn)
+    def __init__(self,  d_in, d_hidden, d_out, activation_fn, beta=0.5):
+        super(HNN, self).__init__(d_in, d_hidden, d_out, activation_fn, beta)
         self.Mt = self.permutation_tensor(d_in)
 
     def time_derivative(self, vinput, t=None):
@@ -60,7 +60,8 @@ class DoublePendulumHNN(HNN):
             if args.input_noise != '':
                 dxdt_hat += noise * torch.randn(*x.shape).to(device)  # add noise, maybe
             #return loss_fn(dxdt, dxdt_hat).item()
-            nextx_hat = x + dxdt_hat
-            return self.loss_fn(nextx_hat, nextx).item()
+            #nextx_hat = x + dxdt_hat 
+            #return self.loss_fn(nextx_hat, nextx).item()
+            return self.custom_loss(x, nextx, dxdt, dxdt_hat)
 
 

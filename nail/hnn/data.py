@@ -44,15 +44,13 @@ class DynamicalSystem():
         self.sys_dim = len(state_symbols)
         self.sys_eqns = None
         self.sympy_symbols = sp.symbols([tuple(state_symbols)])
-        #logmsg(f"data: self.sympy_symbols: {self.sympy_symbols}")
         self.sys_hamiltonian = None
         self.sys_eqns = []
-        logmsg(f"sys_hamiltonian: {sys_hamiltonian}")
         self.sys_fn = sympify(sys_hamiltonian, evaluate=False)
         self.sys_hamiltonian = sp.lambdify(self.sympy_symbols, self.sys_fn, 'numpy')
         for i in range(self.sys_dim):
             fn = self.sys_fn.diff(self.state_symbols[i])
-            logmsg(f"{self.state_symbols[i]}' = {fn}")
+            #logmsg(f"{self.state_symbols[i]}' = {fn}")
             self.sys_eqns.append(sp.lambdify(self.sympy_symbols, fn))
 
     def get_energy(self, state):

@@ -6,28 +6,37 @@ import torch.distributed as dist
 from torch.nn.utils import clip_grad_norm_
 from .utils import logmsg
 
-''' module: blnn.py
-    Authors: Anshul Choudary and Scott Miller, Nonlinear A.I. Lab (NAIL).  Scott wrote validate() and etrain().
-             Anshul wrote the constructor, forward() and time_derivative() functions.
-'''
 class BLNN(torch.nn.Module):
-    ''' MLP network implementation which serves as a Baseline Neural Network (BLNN), for comparison
-        against the more advanced Hamiltonian Neural Network (HNN). 
-        
-        The outputs of the network represent the time derivatives of the canonical input coordinates (q, p). 
-    '''
+    ''' Classic neural network implementation which serves as a baseline NN model '''
 
     stats_dict = {'training': [],
                   'testing': [],
                   'grad_norms': [],
                   'grad_stds': []}
 
-    def __init__(self, d_in, d_hidden, d_out, activation_fn):
-        ''' Construct the network:
-            d_in: input dimension
-            d_hidden: hidden layer dimension
-            d_out: output dimension
-        '''
+    def custom_loss(self, x, nextx, dxdt, dxdt_hat):
+        nextx_hat = x + (dxdt_hat * 0.0001)
+        #loss = (self.beta * torch.mean((dxdt - dxdt_hat)**2)) + \
+        #       ((1.0 - self.beta) * torch.mean((nextx - nextx_hat)**2))
+        loss = torch.mean((self.beta * (dxdt - dxdt_hat)**2) + \
+                         ((1.0 - self.beta) * (nextx - nextx_hat)**2))
+ 
+        return loss
+
+    def custom_loss_old(outputs, targets, coefficients=None):
+        ''' Function custom_loss returns a weighted sum of MSE losses across 
+            multiple sets of output/target pairs. '''
+        total_loss = torch.zeros((outputs.size[0]))
+        for o in range(outputs.size[0]):
+            #loss = torch.mean((outputs[o] - targets[o])**2)
+            loss = torch.nn.MSELoss(outputs[o], targets[o])
+            if coefficients is not None:
+                loss *= coefficients[o]
+            total_loss += loss
+        
+        return total_loss
+
+    def __init__(self, d_in, d_hidden, d_out, activation_fn, beta=0.5):
         super(BLNN, self).__init__()
         self.layers = torch.nn.ModuleList()
         self.nonlinearity = []
@@ -35,6 +44,7 @@ class BLNN(torch.nn.Module):
         self.d_out = d_out
         self.d_hidden = d_hidden
         self.loss_fn = torch.nn.MSELoss()
+        self.beta = beta
 
         if activation_fn == 'Tanh':
             nonlinear_fn = torch.nn.Tanh()
@@ -54,10 +64,9 @@ class BLNN(torch.nn.Module):
             torch.nn.init.orthogonal_(self.layers[i].weight)
 
         torch.nn.init.orthogonal_(self.last_layer.weight)
+        #logmsg("model: {}".format(self))
 
     def init_device(self):
-        ''' Initialize the CPU/GPU device attributes, and move the loss function onto the
-            selected device. '''
         self.device = self.state_dict()['layers.0.weight'].get_device()
         self.sdevice = torch.device(f"cuda:{self.device}" if self.device >= 0 else "cpu")
         self.loss_fn = self.loss_fn.to(self.sdevice)
@@ -65,8 +74,6 @@ class BLNN(torch.nn.Module):
         return self.device
 
     def forward(self, x):
-        ''' Make one forward propagation of input tensor x through the entire network. Return
-            the output layer.'''
         dict_layers = dict(zip(self.layers, self.nonlinearity))
         for layer, nonlinear_transform in dict_layers.items():
             out = nonlinear_transform(layer(x))
@@ -74,35 +81,31 @@ class BLNN(torch.nn.Module):
         return self.last_layer(out)
 
     def time_derivative(self, x):
-        ''' This function by default calls the forward() function.  It will be overridden by
-            HNN, which will extend the functionality via Hamilton's symplectic gradient. '''
         return self(x)
 
-    def validate(self, args, data_stream, device):
-        ''' Test the model against the validation (holdout) data.  The loss will be used to
-            determine how accurately the network is learning the time derivatives. '''
+    def validate(self, args, data, device):
         self.eval()
         device = self.state_dict()['layers.0.weight'].get_device()
+        #loss_fn = torch.nn.MSELoss().to(device)
         if args.input_noise != '':
           npnoise = np.array(args.input_noise, dtype="float")
           noise = torch.tensor(npnoise).to(device)
 
-        ''' The validation data stream is configured to return the entire set in a 
-            single, randomized batch, therefore there will only ever be a single
-            iteration. '''
+        # the validation data stream is configured to return the entire set in a 
+        # single, randomized batch:
         with torch.no_grad():
-            for x, dxdt in data_stream:
+            for x, dxdt, nextx in data:
                 dxdt_hat = self.time_derivative(x)
                 if args.input_noise != '':
                   dxdt_hat += noise * torch.randn(*x.shape).to(device)  # add noise, maybe
-                return self.loss_fn(dxdt_hat, dxdt).item()
+                #return self.loss_fn(dxdt_hat, dxdt).item()
+                #nextx_hat = x + dxdt_hat 
+                #return self.loss_fn(nextx_hat, nextx).item()
+                return self.custom_loss(x, nextx, dxdt, dxdt_hat)
 
-    def etrain(self, args, data_stream, optimizer):
-        ''' Train one entire epoch of the input data stream. Return the statistics for the epoch:
-            loss, gradient norm, and gradient standard deviation. '''
+    # epoch train:
+    def etrain(self, args, train_data, optimizer):
         self.train()
-        torch.manual_seed(args.seed)
-        np.random.seed(args.seed)
         stats = copy.deepcopy(BLNN.stats_dict)
         addnoise = False
         if args.input_noise != '':
@@ -111,12 +114,15 @@ class BLNN(torch.nn.Module):
           noise = torch.tensor(npnoise).to(torchdev)
 
         batches = 0
-        for x, dxdt in data_stream:
+        for x, dxdt, nextx in train_data:
             optimizer.zero_grad()
             dxdt_hat = self.time_derivative(x)
             if addnoise:
               dxdt_hat += noise * torch.randn(*x.shape).to(torchdev)  # add noise, maybe
-            loss = self.loss_fn(dxdt_hat, dxdt)
+            #loss = self.loss_fn(dxdt_hat, dxdt)
+            #nextx_hat = x + dxdt_hat 
+            #loss = self.loss_fn(nextx_hat, nextx)
+            loss = self.custom_loss(x, nextx, dxdt, dxdt_hat)
             loss.backward()
             if args.clip != 0:
               clip_grad_norm_(self.parameters(), args.clip)
@@ -127,20 +133,18 @@ class BLNN(torch.nn.Module):
             stats['grad_norms'].append((grad @ grad).item())
             stats['grad_stds'].append(grad.std().item())
 
-            if args.verbose and ((batches % args.print_every == 0) and self.device <= 0):
+            if args.verbose and (batches % args.print_every == 0): 
               grad_norm = grad @ grad
+              logmsg(f'batch size: {x.shape[0]}')
               logmsg("batch[{}] train loss {:.4e}, grad norm: {:.4e}, grad std: {:.4e}"
                     .format(batches, loss.item(), grad_norm, grad.std()))
-              logmsg('\tgrad: {}'.format(grad))
-              for name, param in self.named_parameters():
-                logmsg('\t{}: {}'.format(name, param.data))
-              logmsg('x: {}'.format(x))
-              logmsg('dxdt: {}'.format(dxdt))
             batches += 1
 
         return stats
 
     def set_label(self, label):
-        ''' Helper function to set the label used to identify the current experiment. '''
         self.run_label = label
 
+    def xy_loss(dxhat, dx):
+        loss = ((dxhat - dx)**2).sum()
+        return loss

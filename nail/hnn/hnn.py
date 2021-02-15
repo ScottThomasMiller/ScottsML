@@ -1,7 +1,6 @@
 from nail.hnn.blnn import BLNN
 import numpy as np
-import torch
-import torch.distributed as dist
+import tensorflow as tf
 from nail.hnn.utils import logmsg
 
 class HNN(BLNN):

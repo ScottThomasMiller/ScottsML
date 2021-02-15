@@ -1,11 +1,17 @@
 '''
 File: data.py
-Authors: Sam Greydanus et. al.
-https://github.com/greydanus/hamiltonian-nn
-
-Adapted for PyTorch streaming by Scott Miller.  
+File Created: Monday, 22 July 2019 13:36:30
+Author: well-well-well
+------------------------
+Description: Calculates the trajectories of any dynamical
+system for various initial conditions and combine all those
+to make a data set which is split into (train, test) data
+sets with some predefined ratio.
+--------------------------
 '''
 
+# Inspired by Hamiltonian Neural Networks | 2019 ( Sam Greydanus, Misko Dzamba, Jason Yosinski)
+# Heavily forked from https://github.com/greydanus/hamiltonian-nn
 
 from nail.hnn.utils import to_pickle, from_pickle, logmsg
 import numpy as np
@@ -17,13 +23,8 @@ from torch.utils.data import Dataset
 
 class DynamicalSystem():
     '''
-    This class does two things:
-
-    1) Simulates multiple trajectories of any dynamical system for various random, initial conditions, and combines all those 
-    trajectories to make a data set, which is then split into training and testing sets.
-
-    2) Forecasts a trajectory via a user-defined method (scipy's IVP, rk4[fixed step size], Custom (Python) symplectic integrators) for 
-    a given initial condition.
+    Integrates a system (passed as in input string for the constructor) using user defined method (scipy's IVP, rk4[fixed step size], Custom (Python) symplectic integrators) for multiple random initial conditions.
+    Returns (train, test) data.
     '''
 
     def __init__(self, sys_hamiltonian, split_ratio=0.3, timesteps=1000,
@@ -45,40 +46,32 @@ class DynamicalSystem():
         self.sympy_symbols = sp.symbols([tuple(state_symbols)])
         self.sys_hamiltonian = None
         self.sys_eqns = []
-        logmsg(f"sys_hamiltonian: {sys_hamiltonian}")
         self.sys_fn = sympify(sys_hamiltonian, evaluate=False)
         self.sys_hamiltonian = sp.lambdify(self.sympy_symbols, self.sys_fn, 'numpy')
         for i in range(self.sys_dim):
             fn = self.sys_fn.diff(self.state_symbols[i])
-            logmsg(f"{self.state_symbols[i]}' = {fn}")
+            #logmsg(f"{self.state_symbols[i]}' = {fn}")
             self.sys_eqns.append(sp.lambdify(self.sympy_symbols, fn))
 
     def get_energy(self, state):
-        ''' Calculate and return a one-element vector representing the
-            Hamiltonian energy of the given state vector. '''
         x = self.sys_hamiltonian(state)
         return np.array(x, dtype=np.float32)
 
     def update(self, t, state):
-       ''' Calculate and return state(t+1) of the given state(t) vector.  
-           First compute the symplectic gradient vector for the given state vector using
-           the differential equations of the Hamiltonian, and then apply that gradient
-           to the current state via matrix multiplication. '''
-       deriv_sympy = np.zeros_like(state)
-       for i in range(self.sys_dim):
-           deriv_sympy[i] = self.sys_eqns[i](state)
+        deriv_sympy = np.zeros_like(state)
+        for i in range(self.sys_dim):
+            deriv_sympy[i] = self.sys_eqns[i](state)
 
-       deriv = np.array(deriv_sympy, dtype=np.float32)
+        deriv = np.array(deriv_sympy, dtype=np.float32)
 
-       m1 = np.array([[0.0, 1.0], [-1.0, 0.0]])
-       m2 = np.eye(int(self.sys_dim / 2))
-       m3 = np.kron(m1, m2)
-       m4 = np.matmul(m3, deriv)
-       # m4 looks like -- [dH/dp1, dH/dp2, -dH/dq1, -dH/dq2]
-       return m4.reshape(-1)
+        m1 = np.array([[0.0, 1.0], [-1.0, 0.0]])
+        m2 = np.eye(int(self.sys_dim / 2))
+        m3 = np.kron(m1, m2)
+        m4 = np.matmul(m3, deriv)
+        # m4 looks like -- [dH/dp1, dH/dp2, -dH/dq1, -dH/dq2]
+        return m4.reshape(-1)
 
     def integrate_one_step(self, func, y0, t, dt, order=2):
-        ''' This function is called by integrate_symplectic. '''
         n_dim = len(y0)
         u, v = np.array(y0[:int(n_dim / 2)]), np.array(y0[int(n_dim / 2):])
 
@@ -107,7 +100,6 @@ class DynamicalSystem():
         return np.concatenate((u_next, v_next), axis=None)
 
     def integrate_symplectic(self, func, dt, t_span, y0, order=2):
-        ''' This function is used by get_orbit(), when the user selects symplectic integration. '''
         print('order = ', order)
         tpoints = int((t_span[1] - t_span[0]) / dt)
         t_eval = np.linspace(t_span[0], t_span[1], tpoints)
@@ -122,7 +114,7 @@ class DynamicalSystem():
         return np.array(sol, dtype=np.float32), t_observed
 
     def update_fn_symplectic(self, t, v, u):
-        ''' This function is used by get_orbit(), when the user selects symplectic integration. '''
+
         if self.external_update_fn is None:
             dudv = self.update_fn(t, state=np.concatenate((u, v), axis=None))
 
@@ -138,7 +130,6 @@ class DynamicalSystem():
         return deriv
 
     def rk4_integrate(self, fun, y0, t_span, dt, t_eval=1):
-        ''' This function is used by get_orbit(), when the user selects rk4 integration. '''
         t1 = t_span[0]
         t2 = t_span[1]
         t_integrate = np.arange(t1, t2, dt, dtype=np.float32)
@@ -161,8 +152,6 @@ class DynamicalSystem():
         return np.array(y, dtype=np.float32), t_observe
 
     def get_orbit(self, state, rtol=1e-12):
-        ''' This function is called by sample_orbits(), to simulate and return a single
-            trajectory of the given initial state. '''
         orbit_settings = {}
 
         if self.integrator == "RK45":
@@ -171,6 +160,7 @@ class DynamicalSystem():
             else:
                 self.update_fn = self.update
 
+        # print(self.update_fn)
         t_eval = np.linspace(
             self.tspan[0], self.tspan[1], self.time_points)
 
@@ -178,8 +168,10 @@ class DynamicalSystem():
         path = integrate.solve_ivp(fun=self.update_fn,
                                    t_span=self.tspan,
                                    y0=state.flatten(),
+        #                           t_eval=t_eval, rtol=1e-12)
                                    t_eval=t_eval, rtol=rtol)
 
+        #orbit = path['y'].reshape(len(self.state_symbols), self.time_points)
         orbit = path['y'].reshape(len(y0), self.time_points)
         orbit_settings['t_eval'] = t_eval
 
@@ -202,9 +194,11 @@ class DynamicalSystem():
         return orbit, orbit_settings
 
     def random_config(self):
-        ''' Calculate and return a random initial state vector of the instantiated system. 
+        '''
+            Train the network on different orbits having different energies
         '''
 
+        # np.seterr(all='raise')
         energy = 0.02 + 0.11 * np.random.random()
 
         result = False
@@ -222,13 +216,15 @@ class DynamicalSystem():
         # np.seterr(all=None)
         state = np.array([q1, q2, p1, p2])
         cal_energy = self.get_energy(state)
+        print("sampled energy = {:.4e}, calculated energy = {:.4e}".format(
+            energy, cal_energy))
 
         return state
 
     def sample_orbits(self):
-        ''' Function sample_orbits() is the main simulator routine which generates multiple
-            trajectories, each using a different, random, initial condition. '''
         orbit_settings = {}
+        if self.verbose:
+            print("Making a data-set for Henon-Heiles system ...")
 
         x, dx, e = [], [], []
         N = self.time_points * self.trajectories
@@ -261,8 +257,8 @@ class DynamicalSystem():
         return data, settings
 
     def make_orbits_dataset(self):
-        ''' This function splits the simulated orbits into a training and a testing set. '''
         data, orbit_settings = self.sample_orbits()
+        # spliting the data --> train + test
         logmsg(f"data['coords'].shape[0]: {data['coords'].shape[0]}")
         logmsg(f"self.split: {self.split}")
 
@@ -289,7 +285,8 @@ class DynamicalSystem():
         return data
 
     def get_dataset(self, filename, save_dir):
-        '''Returns the trajectory dataset. Also constructs the dataset if no saved version is available.'''
+        '''Returns the trajectory dataset. Also constructs
+           the dataset if no saved version is available.'''
         path = '{}/{}'.format(save_dir, filename)
         try:
             data = from_pickle(path)
@@ -304,14 +301,14 @@ class DynamicalSystem():
         return data
 
 class DataStream(Dataset):
-    ''' Convert the data set into a stream for PyTorch's training loop. '''
     def __init__(self, data):
         self.x = data['x']
         self.dxdt = data['dxdt']
+        self.tx = data['tx']
         self.len = len(self.x)
 
     def __getitem__(self, index):
-        return self.x[index], self.dxdt[index]
+        return self.x[index], self.dxdt[index], self.tx[index]
 
     def __len__(self):
         return self.len

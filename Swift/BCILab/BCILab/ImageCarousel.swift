@@ -22,19 +22,17 @@ class ImageCarouselView: UIImageView {
         
         return images
     }
-    
-    convenience init() {
-        self.init()
-        self.animationImages = loadImages("Faces")
-        self.contentMode = .center
-        self.animationDuration = 3.0 * Double(self.animationImages!.count)
-        self.startAnimating()
-    }
 }
 
 struct ImageCarouselRep: UIViewRepresentable {
     func makeUIView(context: Context) -> ImageCarouselView {
         let newView = ImageCarouselView()
+        newView.animationImages = newView.loadImages("Faces")
+        newView.contentMode = .center
+        newView.animationDuration = 3.0 * Double(newView.animationImages!.count)
+        newView.backgroundColor = .black
+        newView.startAnimating()
+
         return newView
     }
     

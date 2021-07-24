@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, gitx!")
-            .padding()
+        GeometryReader { geometry in
+            VStack {
+                ImageCarouselRep()
+            }
+        }
     }
 }
 

@@ -13,6 +13,8 @@
 		5F58BD1726AC1C5E003F5483 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F58BD1626AC1C5E003F5483 /* Preview Assets.xcassets */; };
 		5F58BD2226AC1C5E003F5483 /* BCILabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD2126AC1C5E003F5483 /* BCILabTests.swift */; };
 		5F58BD2D26AC1C5E003F5483 /* BCILabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD2C26AC1C5E003F5483 /* BCILabUITests.swift */; };
+		5F58BD3B26AC89BD003F5483 /* Faces in Resources */ = {isa = PBXBuildFile; fileRef = 5F58BD3A26AC89BD003F5483 /* Faces */; };
+		5F58BD3D26AC89F5003F5483 /* ImageCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD3C26AC89F5003F5483 /* ImageCarousel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		5F58BD2826AC1C5E003F5483 /* BCILabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BCILabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F58BD2C26AC1C5E003F5483 /* BCILabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCILabUITests.swift; sourceTree = "<group>"; };
 		5F58BD2E26AC1C5E003F5483 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5F58BD3A26AC89BD003F5483 /* Faces */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Faces; sourceTree = "<group>"; };
+		5F58BD3C26AC89F5003F5483 /* ImageCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarousel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,7 @@
 		5F58BD0326AC1C5D003F5483 = {
 			isa = PBXGroup;
 			children = (
+				5F58BD3A26AC89BD003F5483 /* Faces */,
 				5F58BD0E26AC1C5D003F5483 /* BCILab */,
 				5F58BD2026AC1C5E003F5483 /* BCILabTests */,
 				5F58BD2B26AC1C5E003F5483 /* BCILabUITests */,
@@ -97,6 +102,7 @@
 			children = (
 				5F58BD0F26AC1C5D003F5483 /* BCILabApp.swift */,
 				5F58BD1126AC1C5D003F5483 /* ContentView.swift */,
+				5F58BD3C26AC89F5003F5483 /* ImageCarousel.swift */,
 				5F58BD1326AC1C5E003F5483 /* Assets.xcassets */,
 				5F58BD1826AC1C5E003F5483 /* Info.plist */,
 				5F58BD1526AC1C5E003F5483 /* Preview Content */,
@@ -233,6 +239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F58BD3B26AC89BD003F5483 /* Faces in Resources */,
 				5F58BD1726AC1C5E003F5483 /* Preview Assets.xcassets in Resources */,
 				5F58BD1426AC1C5E003F5483 /* Assets.xcassets in Resources */,
 			);
@@ -259,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F58BD3D26AC89F5003F5483 /* ImageCarousel.swift in Sources */,
 				5F58BD1226AC1C5D003F5483 /* ContentView.swift in Sources */,
 				5F58BD1026AC1C5D003F5483 /* BCILabApp.swift in Sources */,
 			);

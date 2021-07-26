@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class ImageCarouselView: UIImageView {
-    func loadImages(_ name: String) -> [UIImage] {
+    func appendImages(_ name: String)  {
         var images = [UIImage]()
         let urls = Bundle.main.urls(forResourcesWithExtension: ".jpg", subdirectory: name)
         for url in urls! {
@@ -18,16 +18,46 @@ class ImageCarouselView: UIImageView {
                 continue
             }
             images.append(image)
+            
+        }
+        if self.animationImages == nil {
+            self.animationImages = images }
+        else {
+            self.animationImages! += images
         }
         
-        return images
+    }
+    
+    func prepare () {
+        // replace the animation images with a new set, which is a shuffling of the current
+        // animation images with blanks inserted between each image:
+        guard let blankURL = Bundle.main.url(forResource: "green_crosshair", withExtension: ".png") else {
+            print("Error: cannot load blank image")
+            return
+        }
+        let blankImage = try! UIImage(data: Data(contentsOf: blankURL))
+        if let currentImages = self.animationImages {
+            let shuffledImages = currentImages.shuffled()
+            var finalImages = [UIImage]()
+            for image in shuffledImages {
+                if finalImages.count > 0 {
+                    finalImages.append(blankImage!)
+                }
+                finalImages.append(image)
+            }
+            self.animationImages = finalImages
+        }
     }
 }
 
 struct ImageCarouselRep: UIViewRepresentable {
+    typealias UIViewType = ImageCarouselView
+
     func makeUIView(context: Context) -> ImageCarouselView {
         let newView = ImageCarouselView()
-        newView.animationImages = newView.loadImages("Faces")
+        newView.appendImages("Faces")
+        newView.appendImages("NonFaces")
+        newView.prepare()
         newView.contentMode = .center
         newView.animationDuration = 3.0 * Double(newView.animationImages!.count)
         newView.backgroundColor = .black
@@ -39,8 +69,4 @@ struct ImageCarouselRep: UIViewRepresentable {
     func updateUIView(_ uiView: ImageCarouselView, context: Context) {
         print("ImageCarouseRep.updateUIView")
     }
-    
-    typealias UIViewType = ImageCarouselView
-    
-    
 }

@@ -20,9 +20,10 @@
 		5F64A17E26AF0D8A0001E9FB /* NonFaces in Resources */ = {isa = PBXBuildFile; fileRef = 5F64A17D26AF0D8A0001E9FB /* NonFaces */; };
 		5F64A17F26AF0D8A0001E9FB /* NonFaces in Resources */ = {isa = PBXBuildFile; fileRef = 5F64A17D26AF0D8A0001E9FB /* NonFaces */; };
 		5F64A18026AF0D8A0001E9FB /* NonFaces in Resources */ = {isa = PBXBuildFile; fileRef = 5F64A17D26AF0D8A0001E9FB /* NonFaces */; };
-		5F64A18226AF0DBF0001E9FB /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F64A18126AF0DBF0001E9FB /* green_crosshair.png */; };
-		5F64A18326AF0DBF0001E9FB /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F64A18126AF0DBF0001E9FB /* green_crosshair.png */; };
-		5F64A18426AF0DBF0001E9FB /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F64A18126AF0DBF0001E9FB /* green_crosshair.png */; };
+		5F71B7EB26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
+		5F71B7EC26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
+		5F71B7ED26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
+		5FD737C526B7232B00EE195C /* liblsl.1.15.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD737C426B7232B00EE195C /* liblsl.1.15.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +59,9 @@
 		5F58BD3C26AC89F5003F5483 /* ImageCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarousel.swift; sourceTree = "<group>"; };
 		5F64A17926AF0D6F0001E9FB /* Faces */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Faces; path = ../../../../../Downloads/images/Faces; sourceTree = "<group>"; };
 		5F64A17D26AF0D8A0001E9FB /* NonFaces */ = {isa = PBXFileReference; lastKnownFileType = folder; path = NonFaces; sourceTree = "<group>"; };
-		5F64A18126AF0DBF0001E9FB /* green_crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_crosshair.png; sourceTree = "<group>"; };
+		5F71B7EA26B0443B006146AC /* green_crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_crosshair.png; path = ../../../../../Downloads/green_crosshair.png; sourceTree = "<group>"; };
+		5FBE6F8526B3F97600BA6B93 /* liblsl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = liblsl.h; sourceTree = "<group>"; };
+		5FD737C426B7232B00EE195C /* liblsl.1.15.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblsl.1.15.0.dylib; path = BCILab/liblsl.1.15.0.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FD737C526B7232B00EE195C /* liblsl.1.15.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,13 +93,15 @@
 		5F58BD0326AC1C5D003F5483 = {
 			isa = PBXGroup;
 			children = (
-				5F64A18126AF0DBF0001E9FB /* green_crosshair.png */,
+				5FBE6F8526B3F97600BA6B93 /* liblsl.h */,
+				5F71B7EA26B0443B006146AC /* green_crosshair.png */,
 				5F64A17D26AF0D8A0001E9FB /* NonFaces */,
 				5F64A17926AF0D6F0001E9FB /* Faces */,
 				5F58BD0E26AC1C5D003F5483 /* BCILab */,
 				5F58BD2026AC1C5E003F5483 /* BCILabTests */,
 				5F58BD2B26AC1C5E003F5483 /* BCILabUITests */,
 				5F58BD0D26AC1C5D003F5483 /* Products */,
+				5FBE6F8226B3F5C000BA6B93 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,6 +152,14 @@
 				5F58BD2E26AC1C5E003F5483 /* Info.plist */,
 			);
 			path = BCILabUITests;
+			sourceTree = "<group>";
+		};
+		5FBE6F8226B3F5C000BA6B93 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5FD737C426B7232B00EE195C /* liblsl.1.15.0.dylib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,7 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F64A18226AF0DBF0001E9FB /* green_crosshair.png in Resources */,
+				5F71B7EB26B0443B006146AC /* green_crosshair.png in Resources */,
 				5F64A17A26AF0D6F0001E9FB /* Faces in Resources */,
 				5F64A17E26AF0D8A0001E9FB /* NonFaces in Resources */,
 				5F58BD1726AC1C5E003F5483 /* Preview Assets.xcassets in Resources */,
@@ -265,7 +279,7 @@
 			files = (
 				5F64A17B26AF0D6F0001E9FB /* Faces in Resources */,
 				5F64A17F26AF0D8A0001E9FB /* NonFaces in Resources */,
-				5F64A18326AF0DBF0001E9FB /* green_crosshair.png in Resources */,
+				5F71B7EC26B0443B006146AC /* green_crosshair.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +289,7 @@
 			files = (
 				5F64A17C26AF0D6F0001E9FB /* Faces in Resources */,
 				5F64A18026AF0D8A0001E9FB /* NonFaces in Resources */,
-				5F64A18426AF0DBF0001E9FB /* green_crosshair.png in Resources */,
+				5F71B7ED26B0443B006146AC /* green_crosshair.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,8 +469,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BCILab",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILab";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -477,8 +497,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BCILab",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILab";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

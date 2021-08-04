@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-
+ 
 class ImageCarouselView: UIImageView {
     func appendImages(_ name: String)  {
         var images = [UIImage]()
@@ -18,8 +18,8 @@ class ImageCarouselView: UIImageView {
                 continue
             }
             images.append(image)
-            
         }
+        
         if self.animationImages == nil {
             self.animationImages = images }
         else {
@@ -59,9 +59,16 @@ struct ImageCarouselRep: UIViewRepresentable {
         newView.appendImages("NonFaces")
         newView.prepare()
         newView.contentMode = .center
-        newView.animationDuration = 3.0 * Double(newView.animationImages!.count)
+        newView.animationDuration = 2.0 * Double(newView.animationImages!.count)
         newView.backgroundColor = .black
+        newView.animationRepeatCount = 1
         newView.startAnimating()
+ 
+        let libinfo = String(cString: lsl_library_info())
+        print(libinfo)
+        let chFormat = ChannelFormat(format: lsl_channel_format_t(3))
+        let streamInfo = StreamInfo(name: "BCILab", format: chFormat, id: "BCILab")
+        let outlet = Outlet(streamInfo: streamInfo)
 
         return newView
     }

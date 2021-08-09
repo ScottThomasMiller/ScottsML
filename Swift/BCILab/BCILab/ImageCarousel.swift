@@ -8,10 +8,6 @@
 import Foundation
 import SwiftUI
  
-struct LabeledImage {
-    let image: UIImage
-    let label: String
-}
 
 class ImageCarouselView: UIView {
     var labeledImages = [LabeledImage]()
@@ -21,7 +17,8 @@ class ImageCarouselView: UIView {
 //        let libinfo = String(cString: lsl_library_info())
 //        print("LSL library: \(libinfo)")
         let chFormat = ChannelFormat(format: lsl_channel_format_t(3))
-        let streamInfo = StreamInfo(name: "ImageLabel", format: chFormat, id: "imageType")
+        let streamInfo = StreamInfo(name: "ImageLabel", format: chFormat, id: "imageType",
+                                    sampleRate: 1.0)
         let outlet = Outlet(streamInfo: streamInfo)
 
         defer {
@@ -42,12 +39,11 @@ class ImageCarouselView: UIView {
             catch {
                 print("Cannot push to outlet. Error code: \(error)")
             }
-            sleep(2)
+            sleep(1)
         }
     }
     
     func appendImages(_ name: String)  {
-//        var images = [UIImage]()
         let urls = Bundle.main.urls(forResourcesWithExtension: ".jpg", subdirectory: name)
         for url in urls! {
             guard let image = try? UIImage(data: Data(contentsOf: url)) else {
@@ -57,13 +53,6 @@ class ImageCarouselView: UIView {
             let labeledImage = LabeledImage(image: image, label: name)
             self.labeledImages.append(labeledImage)
         }
-        
-//        if self.animationImages == nil {
-//            self.animationImages = images }
-//        else {
-//            self.animationImages! += images
-//        }
-        
     }
     
     func prepare () {
@@ -77,9 +66,7 @@ class ImageCarouselView: UIView {
         let shuffledImages = self.labeledImages.shuffled()
         var finalImages = [LabeledImage]()
         for image in shuffledImages {
-            if finalImages.count > 0 {
-                finalImages.append(blank)
-            }
+            finalImages.append(blank)
             finalImages.append(image)
         }
         self.labeledImages = finalImages

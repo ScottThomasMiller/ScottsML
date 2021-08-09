@@ -28,10 +28,8 @@
 		5F524C4B26BAD67C00DECD6E /* ChannelFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */; };
 		5F524C4C26BAD67C00DECD6E /* ChannelFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */; };
 		5F524C4D26BAD67C00DECD6E /* ChannelFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */; };
-		5F524C5526BADC0B00DECD6E /* liblsl.1.15.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */; };
-		5F524C5626BADE0500DECD6E /* liblsl.1.15.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5F58BD1026AC1C5D003F5483 /* BCILabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD0F26AC1C5D003F5483 /* BCILabApp.swift */; };
-		5F58BD1226AC1C5D003F5483 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD1126AC1C5D003F5483 /* ContentView.swift */; };
+		5F58BD1226AC1C5D003F5483 /* ContentViewY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD1126AC1C5D003F5483 /* ContentViewY.swift */; };
 		5F58BD1426AC1C5E003F5483 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F58BD1326AC1C5E003F5483 /* Assets.xcassets */; };
 		5F58BD1726AC1C5E003F5483 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F58BD1626AC1C5E003F5483 /* Preview Assets.xcassets */; };
 		5F58BD2226AC1C5E003F5483 /* BCILabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD2126AC1C5E003F5483 /* BCILabTests.swift */; };
@@ -46,6 +44,10 @@
 		5F71B7EB26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
 		5F71B7EC26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
 		5F71B7ED26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
+		5FAB3B4126BEA78000AAE13E /* liblsl.1.15..dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAB3B4026BEA78000AAE13E /* liblsl.1.15..dylib */; };
+		5FAB3B4226BEA79000AAE13E /* liblsl.1.15..dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5FAB3B4026BEA78000AAE13E /* liblsl.1.15..dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5FC07DB526BEFB4300B1971B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC07DB426BEFB4300B1971B /* ContentView.swift */; };
+		5FC07DB726BF67CB00B1971B /* LabeledImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC07DB626BF67CB00B1971B /* LabeledImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,13 +68,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5F524C5726BADE0500DECD6E /* Embed Libraries */ = {
+		5FAB3B4326BEA79100AAE13E /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F524C5626BADE0500DECD6E /* liblsl.1.15.0.dylib in Embed Libraries */,
+				5FAB3B4226BEA79000AAE13E /* liblsl.1.15..dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,7 +95,7 @@
 		5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblsl.1.15.0.dylib; path = "../../../../liblsl/build/Release-iphonesimulator/liblsl.1.15.0.dylib"; sourceTree = "<group>"; };
 		5F58BD0C26AC1C5D003F5483 /* BCILab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BCILab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F58BD0F26AC1C5D003F5483 /* BCILabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCILabApp.swift; sourceTree = "<group>"; };
-		5F58BD1126AC1C5D003F5483 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5F58BD1126AC1C5D003F5483 /* ContentViewY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewY.swift; sourceTree = "<group>"; };
 		5F58BD1326AC1C5E003F5483 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F58BD1626AC1C5E003F5483 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5F58BD1826AC1C5E003F5483 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -107,7 +109,10 @@
 		5F64A17926AF0D6F0001E9FB /* Faces */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Faces; path = ../../../../../Downloads/images/Faces; sourceTree = "<group>"; };
 		5F64A17D26AF0D8A0001E9FB /* NonFaces */ = {isa = PBXFileReference; lastKnownFileType = folder; path = NonFaces; sourceTree = "<group>"; };
 		5F71B7EA26B0443B006146AC /* green_crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_crosshair.png; path = ../../../../../Downloads/green_crosshair.png; sourceTree = "<group>"; };
+		5FAB3B4026BEA78000AAE13E /* liblsl.1.15..dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblsl.1.15..dylib; path = BCILab/liblsl.1.15..dylib; sourceTree = "<group>"; };
 		5FBE6F8526B3F97600BA6B93 /* liblsl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = liblsl.h; sourceTree = "<group>"; };
+		5FC07DB426BEFB4300B1971B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5FC07DB626BF67CB00B1971B /* LabeledImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F524C5526BADC0B00DECD6E /* liblsl.1.15.0.dylib in Frameworks */,
+				5FAB3B4126BEA78000AAE13E /* liblsl.1.15..dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,11 +188,13 @@
 			isa = PBXGroup;
 			children = (
 				5F58BD0F26AC1C5D003F5483 /* BCILabApp.swift */,
-				5F58BD1126AC1C5D003F5483 /* ContentView.swift */,
+				5F58BD1126AC1C5D003F5483 /* ContentViewY.swift */,
 				5F58BD3C26AC89F5003F5483 /* ImageCarousel.swift */,
 				5F58BD1326AC1C5E003F5483 /* Assets.xcassets */,
 				5F58BD1826AC1C5E003F5483 /* Info.plist */,
 				5F58BD1526AC1C5E003F5483 /* Preview Content */,
+				5FC07DB426BEFB4300B1971B /* ContentView.swift */,
+				5FC07DB626BF67CB00B1971B /* LabeledImage.swift */,
 			);
 			path = BCILab;
 			sourceTree = "<group>";
@@ -221,6 +228,7 @@
 		5FBE6F8226B3F5C000BA6B93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FAB3B4026BEA78000AAE13E /* liblsl.1.15..dylib */,
 				5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */,
 			);
 			name = Frameworks;
@@ -236,7 +244,7 @@
 				5F58BD0826AC1C5D003F5483 /* Sources */,
 				5F58BD0926AC1C5D003F5483 /* Frameworks */,
 				5F58BD0A26AC1C5D003F5483 /* Resources */,
-				5F524C5726BADE0500DECD6E /* Embed Libraries */,
+				5FAB3B4326BEA79100AAE13E /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -368,11 +376,13 @@
 				5F524C4526BAD67C00DECD6E /* Error.swift in Sources */,
 				5F524C3926BAD67C00DECD6E /* Global.swift in Sources */,
 				5F524C3F26BAD67C00DECD6E /* Sample.swift in Sources */,
+				5FC07DB526BEFB4300B1971B /* ContentView.swift in Sources */,
 				5F58BD3D26AC89F5003F5483 /* ImageCarousel.swift in Sources */,
-				5F58BD1226AC1C5D003F5483 /* ContentView.swift in Sources */,
+				5F58BD1226AC1C5D003F5483 /* ContentViewY.swift in Sources */,
 				5F524C4226BAD67C00DECD6E /* Inlet.swift in Sources */,
 				5F524C4826BAD67C00DECD6E /* StreamInfo.swift in Sources */,
 				5F524C3C26BAD67C00DECD6E /* Outlet.swift in Sources */,
+				5FC07DB726BF67CB00B1971B /* LabeledImage.swift in Sources */,
 				5F524C4B26BAD67C00DECD6E /* ChannelFormat.swift in Sources */,
 				5F58BD1026AC1C5D003F5483 /* BCILabApp.swift in Sources */,
 			);

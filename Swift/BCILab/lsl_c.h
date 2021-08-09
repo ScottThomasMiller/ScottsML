@@ -512,6 +512,8 @@ extern LIBLSL_C_API int32_t lsl_push_sample_s(lsl_outlet out, const int16_t *dat
 extern LIBLSL_C_API int32_t lsl_push_sample_c(lsl_outlet out, const char *data);
 extern LIBLSL_C_API int32_t lsl_push_sample_v(lsl_outlet out, const void *data);
 extern LIBLSL_C_API int32_t lsl_push_sample_f(lsl_outlet out, const float *data);
+//extern LIBLSL_C_API int32_t lsl_push_sample_str(lsl_outlet out, const char **data);
+extern LIBLSL_C_API int32_t lsl_push_sample_str(lsl_outlet out, const char *data);
 /// @}
 /** @copydoc lsl_push_sample_f
  * @param timestamp Optionally the capture time of the sample, in agreement with

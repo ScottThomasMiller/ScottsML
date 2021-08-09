@@ -7,6 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F524C3926BAD67C00DECD6E /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C2F26BAD67B00DECD6E /* Global.swift */; };
+		5F524C3A26BAD67C00DECD6E /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C2F26BAD67B00DECD6E /* Global.swift */; };
+		5F524C3B26BAD67C00DECD6E /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C2F26BAD67B00DECD6E /* Global.swift */; };
+		5F524C3C26BAD67C00DECD6E /* Outlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3126BAD67B00DECD6E /* Outlet.swift */; };
+		5F524C3D26BAD67C00DECD6E /* Outlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3126BAD67B00DECD6E /* Outlet.swift */; };
+		5F524C3E26BAD67C00DECD6E /* Outlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3126BAD67B00DECD6E /* Outlet.swift */; };
+		5F524C3F26BAD67C00DECD6E /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3226BAD67B00DECD6E /* Sample.swift */; };
+		5F524C4026BAD67C00DECD6E /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3226BAD67B00DECD6E /* Sample.swift */; };
+		5F524C4126BAD67C00DECD6E /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3226BAD67B00DECD6E /* Sample.swift */; };
+		5F524C4226BAD67C00DECD6E /* Inlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3426BAD67C00DECD6E /* Inlet.swift */; };
+		5F524C4326BAD67C00DECD6E /* Inlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3426BAD67C00DECD6E /* Inlet.swift */; };
+		5F524C4426BAD67C00DECD6E /* Inlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3426BAD67C00DECD6E /* Inlet.swift */; };
+		5F524C4526BAD67C00DECD6E /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3526BAD67C00DECD6E /* Error.swift */; };
+		5F524C4626BAD67C00DECD6E /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3526BAD67C00DECD6E /* Error.swift */; };
+		5F524C4726BAD67C00DECD6E /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3526BAD67C00DECD6E /* Error.swift */; };
+		5F524C4826BAD67C00DECD6E /* StreamInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3626BAD67C00DECD6E /* StreamInfo.swift */; };
+		5F524C4926BAD67C00DECD6E /* StreamInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3626BAD67C00DECD6E /* StreamInfo.swift */; };
+		5F524C4A26BAD67C00DECD6E /* StreamInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3626BAD67C00DECD6E /* StreamInfo.swift */; };
+		5F524C4B26BAD67C00DECD6E /* ChannelFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */; };
+		5F524C4C26BAD67C00DECD6E /* ChannelFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */; };
+		5F524C4D26BAD67C00DECD6E /* ChannelFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */; };
+		5F524C5526BADC0B00DECD6E /* liblsl.1.15.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */; };
+		5F524C5626BADE0500DECD6E /* liblsl.1.15.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5F58BD1026AC1C5D003F5483 /* BCILabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD0F26AC1C5D003F5483 /* BCILabApp.swift */; };
 		5F58BD1226AC1C5D003F5483 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58BD1126AC1C5D003F5483 /* ContentView.swift */; };
 		5F58BD1426AC1C5E003F5483 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F58BD1326AC1C5E003F5483 /* Assets.xcassets */; };
@@ -23,7 +46,6 @@
 		5F71B7EB26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
 		5F71B7EC26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
 		5F71B7ED26B0443B006146AC /* green_crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71B7EA26B0443B006146AC /* green_crosshair.png */; };
-		5FD737C526B7232B00EE195C /* liblsl.1.15.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD737C426B7232B00EE195C /* liblsl.1.15.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +65,32 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5F524C5726BADE0500DECD6E /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5F524C5626BADE0500DECD6E /* liblsl.1.15.0.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		5F524C2F26BAD67B00DECD6E /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		5F524C3126BAD67B00DECD6E /* Outlet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Outlet.swift; sourceTree = "<group>"; };
+		5F524C3226BAD67B00DECD6E /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
+		5F524C3426BAD67C00DECD6E /* Inlet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inlet.swift; sourceTree = "<group>"; };
+		5F524C3526BAD67C00DECD6E /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		5F524C3626BAD67C00DECD6E /* StreamInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamInfo.swift; sourceTree = "<group>"; };
+		5F524C3726BAD67C00DECD6E /* LabStreamingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabStreamingLayer.h; sourceTree = "<group>"; };
+		5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelFormat.swift; sourceTree = "<group>"; };
+		5F524C4E26BAD84400DECD6E /* lsl_c.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lsl_c.h; sourceTree = "<group>"; };
+		5F524C4F26BAD86F00DECD6E /* lsl_constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lsl_constants.h; sourceTree = "<group>"; };
+		5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblsl.1.15.0.dylib; path = "../../../../liblsl/build/Release-iphonesimulator/liblsl.1.15.0.dylib"; sourceTree = "<group>"; };
 		5F58BD0C26AC1C5D003F5483 /* BCILab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BCILab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F58BD0F26AC1C5D003F5483 /* BCILabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCILabApp.swift; sourceTree = "<group>"; };
 		5F58BD1126AC1C5D003F5483 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,7 +108,6 @@
 		5F64A17D26AF0D8A0001E9FB /* NonFaces */ = {isa = PBXFileReference; lastKnownFileType = folder; path = NonFaces; sourceTree = "<group>"; };
 		5F71B7EA26B0443B006146AC /* green_crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_crosshair.png; path = ../../../../../Downloads/green_crosshair.png; sourceTree = "<group>"; };
 		5FBE6F8526B3F97600BA6B93 /* liblsl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = liblsl.h; sourceTree = "<group>"; };
-		5FD737C426B7232B00EE195C /* liblsl.1.15.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblsl.1.15.0.dylib; path = BCILab/liblsl.1.15.0.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FD737C526B7232B00EE195C /* liblsl.1.15.0.dylib in Frameworks */,
+				5F524C5526BADC0B00DECD6E /* liblsl.1.15.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,9 +136,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F524C2E26BAD63E00DECD6E /* LSL */ = {
+			isa = PBXGroup;
+			children = (
+				5F524C3826BAD67C00DECD6E /* ChannelFormat.swift */,
+				5F524C3526BAD67C00DECD6E /* Error.swift */,
+				5F524C2F26BAD67B00DECD6E /* Global.swift */,
+				5F524C3426BAD67C00DECD6E /* Inlet.swift */,
+				5F524C3726BAD67C00DECD6E /* LabStreamingLayer.h */,
+				5F524C3126BAD67B00DECD6E /* Outlet.swift */,
+				5F524C3226BAD67B00DECD6E /* Sample.swift */,
+				5F524C3626BAD67C00DECD6E /* StreamInfo.swift */,
+			);
+			path = LSL;
+			sourceTree = "<group>";
+		};
 		5F58BD0326AC1C5D003F5483 = {
 			isa = PBXGroup;
 			children = (
+				5F524C4E26BAD84400DECD6E /* lsl_c.h */,
+				5F524C4F26BAD86F00DECD6E /* lsl_constants.h */,
+				5F524C2E26BAD63E00DECD6E /* LSL */,
 				5FBE6F8526B3F97600BA6B93 /* liblsl.h */,
 				5F71B7EA26B0443B006146AC /* green_crosshair.png */,
 				5F64A17D26AF0D8A0001E9FB /* NonFaces */,
@@ -157,7 +221,7 @@
 		5FBE6F8226B3F5C000BA6B93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FD737C426B7232B00EE195C /* liblsl.1.15.0.dylib */,
+				5F524C5426BADC0B00DECD6E /* liblsl.1.15.0.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -172,6 +236,7 @@
 				5F58BD0826AC1C5D003F5483 /* Sources */,
 				5F58BD0926AC1C5D003F5483 /* Frameworks */,
 				5F58BD0A26AC1C5D003F5483 /* Resources */,
+				5F524C5726BADE0500DECD6E /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -300,8 +365,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F524C4526BAD67C00DECD6E /* Error.swift in Sources */,
+				5F524C3926BAD67C00DECD6E /* Global.swift in Sources */,
+				5F524C3F26BAD67C00DECD6E /* Sample.swift in Sources */,
 				5F58BD3D26AC89F5003F5483 /* ImageCarousel.swift in Sources */,
 				5F58BD1226AC1C5D003F5483 /* ContentView.swift in Sources */,
+				5F524C4226BAD67C00DECD6E /* Inlet.swift in Sources */,
+				5F524C4826BAD67C00DECD6E /* StreamInfo.swift in Sources */,
+				5F524C3C26BAD67C00DECD6E /* Outlet.swift in Sources */,
+				5F524C4B26BAD67C00DECD6E /* ChannelFormat.swift in Sources */,
 				5F58BD1026AC1C5D003F5483 /* BCILabApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,6 +382,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F524C4C26BAD67C00DECD6E /* ChannelFormat.swift in Sources */,
+				5F524C3D26BAD67C00DECD6E /* Outlet.swift in Sources */,
+				5F524C4026BAD67C00DECD6E /* Sample.swift in Sources */,
+				5F524C3A26BAD67C00DECD6E /* Global.swift in Sources */,
+				5F524C4326BAD67C00DECD6E /* Inlet.swift in Sources */,
+				5F524C4626BAD67C00DECD6E /* Error.swift in Sources */,
+				5F524C4926BAD67C00DECD6E /* StreamInfo.swift in Sources */,
 				5F58BD2226AC1C5E003F5483 /* BCILabTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,6 +397,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F524C4D26BAD67C00DECD6E /* ChannelFormat.swift in Sources */,
+				5F524C3E26BAD67C00DECD6E /* Outlet.swift in Sources */,
+				5F524C4126BAD67C00DECD6E /* Sample.swift in Sources */,
+				5F524C3B26BAD67C00DECD6E /* Global.swift in Sources */,
+				5F524C4426BAD67C00DECD6E /* Inlet.swift in Sources */,
+				5F524C4726BAD67C00DECD6E /* Error.swift in Sources */,
+				5F524C4A26BAD67C00DECD6E /* StreamInfo.swift in Sources */,
 				5F58BD2D26AC1C5E003F5483 /* BCILabUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,6 +548,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"BCILab/Preview Content\"";
 				DEVELOPMENT_TEAM = Y8JL76N88P;
+				"DYLIB_INSTALL_NAME_BASE[arch=*]" = "@rpath";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = BCILab/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -472,11 +559,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BCILab",
+					"$(PROJECT_DIR)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILab";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SUPPORTED_PLATFORMS = macosx;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = liblsl.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -490,6 +579,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"BCILab/Preview Content\"";
 				DEVELOPMENT_TEAM = Y8JL76N88P;
+				"DYLIB_INSTALL_NAME_BASE[arch=*]" = "@rpath";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = BCILab/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -500,11 +590,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BCILab",
+					"$(PROJECT_DIR)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILab";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SUPPORTED_PLATFORMS = macosx;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = liblsl.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -523,6 +615,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILabTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -546,6 +642,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILabTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -566,6 +666,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILabUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -585,6 +689,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Aeris-Rising.BCILabUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

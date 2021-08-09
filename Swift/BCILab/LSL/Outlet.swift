@@ -12,6 +12,10 @@ public class Outlet {
   let base: lsl_outlet
   let streamInfo: StreamInfo
   
+//  deinit {
+//    print("Outlet.deinit()")
+//    lsl_destroy_outlet(self.base)
+//  }
   
   public init(streamInfo: StreamInfo) {
     self.streamInfo = streamInfo
@@ -27,10 +31,23 @@ extension Outlet {
   
   public func push(data: String) throws {
     guard streamInfo.channelFormat == .string else { throw Error.argument }
-    
+    //guard streamInfo.channelFormat == .int16 else { throw Error.argument }
+//    var iVal: Int16 = 0
+//    switch data {
+//        case "Faces": iVal = 0
+//        case "NonFaces":  iVal = 1
+//        case "blank":  iVal = 2
+//        default: iVal = 2
+//    }
+//    let errorCode = lsl_push_sample_s(base, [iVal])
     let errorCode = lsl_push_sample_c(base, data)
     if errorCode != 0 {
       throw Error(rawValue: errorCode)!
     }
+  }
+    
+  public func close() {
+    print("Outlet.close()")
+    lsl_destroy_outlet(self.base)
   }
 }

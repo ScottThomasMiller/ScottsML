@@ -12,6 +12,7 @@ public class StreamInfo {
   public let base: lsl_streaminfo
   
   deinit {
+    print("StreamInfo.deinit()")
     lsl_destroy_streaminfo(base)
   }
   
@@ -20,10 +21,9 @@ public class StreamInfo {
   }
   
   public init(name: String, format: ChannelFormat, id: String) {
-    self.base = lsl_create_streaminfo(name, "", 1, LSL_IRREGULAR_RATE, lsl_channel_format_t(rawValue: format.rawValue), id)
+    self.base = lsl_create_streaminfo(name, "Markers", 1, LSL_IRREGULAR_RATE, lsl_channel_format_t(rawValue: format.rawValue), id)
   }
 }
-
 
 extension StreamInfo: CustomDebugStringConvertible {
   public var debugDescription: String {

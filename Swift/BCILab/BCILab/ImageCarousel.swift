@@ -8,45 +8,81 @@
 import Foundation
 import SwiftUI
  
-class ImageCarouselView: UIImageView {
+struct LabeledImage {
+    let image: UIImage
+    let label: String
+}
+
+class ImageCarouselView: UIView {
+    var labeledImages = [LabeledImage]()
+    @State private var imageNum = 0
+    
+    func pushAnimation() {
+//        let libinfo = String(cString: lsl_library_info())
+//        print("LSL library: \(libinfo)")
+        let chFormat = ChannelFormat(format: lsl_channel_format_t(3))
+        let streamInfo = StreamInfo(name: "ImageLabel", format: chFormat, id: "imageType")
+        let outlet = Outlet(streamInfo: streamInfo)
+
+        defer {
+            outlet.close()
+        }
+        
+        for labeledImage in self.labeledImages {
+            let imageView = UIImageView(image: labeledImage.image)
+            imageView.frame = self.frame
+            self.addSubview(imageView)
+            self.bringSubviewToFront(imageView)
+            self.imageNum += 1
+            
+            print("push label: \(labeledImage.label)")
+            do {
+                try outlet.push(data: labeledImage.label)
+            }
+            catch {
+                print("Cannot push to outlet. Error code: \(error)")
+            }
+            sleep(2)
+        }
+    }
+    
     func appendImages(_ name: String)  {
-        var images = [UIImage]()
+//        var images = [UIImage]()
         let urls = Bundle.main.urls(forResourcesWithExtension: ".jpg", subdirectory: name)
         for url in urls! {
             guard let image = try? UIImage(data: Data(contentsOf: url)) else {
                 print("Error loading image: \(url)")
                 continue
             }
-            images.append(image)
+            let labeledImage = LabeledImage(image: image, label: name)
+            self.labeledImages.append(labeledImage)
         }
         
-        if self.animationImages == nil {
-            self.animationImages = images }
-        else {
-            self.animationImages! += images
-        }
+//        if self.animationImages == nil {
+//            self.animationImages = images }
+//        else {
+//            self.animationImages! += images
+//        }
         
     }
     
     func prepare () {
-        // replace the animation images with a new set, which is a shuffling of the current
-        // animation images with blanks inserted between each image:
+        // replace the labeled animation images with a new set, which is a shuffling of the current animation images with blanks inserted between each image:
         guard let blankURL = Bundle.main.url(forResource: "green_crosshair", withExtension: ".png") else {
             print("Error: cannot load blank image")
             return
         }
         let blankImage = try! UIImage(data: Data(contentsOf: blankURL))
-        if let currentImages = self.animationImages {
-            let shuffledImages = currentImages.shuffled()
-            var finalImages = [UIImage]()
-            for image in shuffledImages {
-                if finalImages.count > 0 {
-                    finalImages.append(blankImage!)
-                }
-                finalImages.append(image)
+        let blank = LabeledImage(image: blankImage!, label: "blank")
+        let shuffledImages = self.labeledImages.shuffled()
+        var finalImages = [LabeledImage]()
+        for image in shuffledImages {
+            if finalImages.count > 0 {
+                finalImages.append(blank)
             }
-            self.animationImages = finalImages
+            finalImages.append(image)
         }
+        self.labeledImages = finalImages
     }
 }
 
@@ -59,16 +95,11 @@ struct ImageCarouselRep: UIViewRepresentable {
         newView.appendImages("NonFaces")
         newView.prepare()
         newView.contentMode = .center
-        newView.animationDuration = 2.0 * Double(newView.animationImages!.count)
+        //newView.animationDuration = 2.0 * Double(newView.animationImages!.count)
         newView.backgroundColor = .black
-        newView.animationRepeatCount = 1
-        newView.startAnimating()
- 
-        let libinfo = String(cString: lsl_library_info())
-        print(libinfo)
-        let chFormat = ChannelFormat(format: lsl_channel_format_t(3))
-        let streamInfo = StreamInfo(name: "BCILab", format: chFormat, id: "BCILab")
-        let outlet = Outlet(streamInfo: streamInfo)
+        //newView.animationRepeatCount = 1
+        //newView.startAnimating()
+        newView.pushAnimation()
 
         return newView
     }

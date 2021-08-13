@@ -31,16 +31,9 @@ extension Outlet {
   
   public func push(data: String) throws {
     guard streamInfo.channelFormat == .string else { throw Error.argument }
-    //guard streamInfo.channelFormat == .int16 else { throw Error.argument }
-//    var iVal: Int16 = 0
-//    switch data {
-//        case "Faces": iVal = 0
-//        case "NonFaces":  iVal = 1
-//        case "blank":  iVal = 2
-//        default: iVal = 2
-//    }
-//    let errorCode = lsl_push_sample_s(base, [iVal])
+
     let errorCode = lsl_push_sample_c(base, data)
+    //let errorCode = lsl_push_sample_str(base, data)
     if errorCode != 0 {
       throw Error(rawValue: errorCode)!
     }

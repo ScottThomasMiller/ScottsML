@@ -5,13 +5,14 @@ import SwiftUI
 struct ContentView: View {
     let interval = 1.0
     @State private var timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
-    @State private var selection = 0
-    @State var isTimerRunning = true
+    @State private var selection = -1
+    @State var isTimerRunning = false
     let images: [LabeledImage] = prepareImages()
     let outlet = Outlet(streamInfo: StreamInfo(name: "ImageLabel",
-                                               format: ChannelFormat(format: lsl_channel_format_t(3)),
+                                               format: .string,
                                                id: "imageType",
-                                               sampleRate: 1.0))
+                                               sampleRate: LSL_IRREGULAR_RATE))
+
 
     var body: some View {
         ZStack{
@@ -32,14 +33,23 @@ struct ContentView: View {
                         self.stopTimer()
                         return
                     }
-                    print("selection: \(selection) label: \(images[selection+1].label)")
-                    do {
-                        try outlet.push(data: images[selection].label)
+                    if selection < 0 {
+                        print("pause")
+                        selection = 0
+                        self.stopTimer()
+                    } else {
+                        let label = images[selection+1].label
+                        let timestamp = lsl_local_clock()
+                        print("label: \(label) timestamp: \(timestamp)")
+                        do {
+                            try outlet.push(data: label)
+                            //try outlet.push(data: labels)
+                        }
+                        catch {
+                            print("Cannot push to outlet. Error code: \(error)")
+                        }
+                        selection += 1
                     }
-                    catch {
-                        print("Cannot push to outlet. Error code: \(error)")
-                    }
-                    selection += 1
                 }
             })
             .animation(nil)
@@ -56,13 +66,19 @@ struct ContentView: View {
     
     init() {
         print("total images: \(images.count)")
+        let eeg = EEG()
+        DispatchQueue.global(qos: .background).async {
+            eeg.streamToFile()
+        }
     }
     
     func stopTimer() {
+        print("stop timer")
         self.timer.upstream.connect().cancel()
     }
     
     func startTimer() {
+        print("start timer")
         self.timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
     }
 }

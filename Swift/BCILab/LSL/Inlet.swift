@@ -55,19 +55,20 @@ public extension Inlet {
     }
   }
   
-  func pullSample(timeout: TimeInterval = LSL_FOREVER) throws -> [Float32] {
+  func pullSample(timeout: TimeInterval = LSL_FOREVER) throws -> (Double, [Float32]) {
     guard streamInfo.channelFormat == .float32 else { throw Error.argument }
     
     var buffer = Array<Float32>(repeating: 0, count: Int(streamInfo.channelCount))
     var error: Int32 = 0
+    var timestamp: Double = 0.0
     
-    lsl_pull_sample_f(base, &buffer, streamInfo.channelCount, timeout, &error)
+    timestamp = lsl_pull_sample_f(base, &buffer, streamInfo.channelCount, timeout, &error)
     
     if error != 0 {
       throw Error(rawValue: error)!
     }
     
-    return buffer
+    return (timestamp, buffer)
   }
   
   func pullSample(timeout: TimeInterval = LSL_FOREVER) throws -> [Double] {
@@ -98,5 +99,17 @@ public extension Inlet {
     }
     
     return buffer
+  }
+    
+    // Added by Scott Miller for Aeris Rising, LLC, 8/12/21
+    func timeCorrection(timeout: TimeInterval = LSL_FOREVER) throws -> Double {
+        var error: Int32 = 0
+        
+        let offsetSecs = lsl_time_correction(base, timeout, &error)
+        if error != 0 {
+          throw Error(rawValue: error)!
+        }
+        
+        return offsetSecs
   }
 }

@@ -21,8 +21,8 @@ public class StreamInfo {
   }
   
   public init(name: String, format: ChannelFormat, id: String,
-              sampleRate: Double = LSL_IRREGULAR_RATE) {
-    self.base = lsl_create_streaminfo(name, "Markers", 1, sampleRate, lsl_channel_format_t(rawValue: format.rawValue), id)
+              sampleRate: Double = LSL_IRREGULAR_RATE, numChannels: Int32 = 16) {
+    self.base = lsl_create_streaminfo(name, "Markers", numChannels, sampleRate, lsl_channel_format_t(rawValue: format.rawValue), id)
   }
 }
 

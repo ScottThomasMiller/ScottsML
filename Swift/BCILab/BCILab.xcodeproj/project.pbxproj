@@ -48,6 +48,7 @@
 		5FAB3B4226BEA79000AAE13E /* liblsl.1.15..dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5FAB3B4026BEA78000AAE13E /* liblsl.1.15..dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5FC07DB526BEFB4300B1971B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC07DB426BEFB4300B1971B /* ContentView.swift */; };
 		5FC07DB726BF67CB00B1971B /* LabeledImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC07DB626BF67CB00B1971B /* LabeledImage.swift */; };
+		5FCF8BAF26C577E3002DA9F0 /* EEG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCF8BAE26C577E3002DA9F0 /* EEG.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		5FBE6F8526B3F97600BA6B93 /* liblsl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = liblsl.h; sourceTree = "<group>"; };
 		5FC07DB426BEFB4300B1971B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5FC07DB626BF67CB00B1971B /* LabeledImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledImage.swift; sourceTree = "<group>"; };
+		5FCF8BAE26C577E3002DA9F0 /* EEG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EEG.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 				5F58BD1526AC1C5E003F5483 /* Preview Content */,
 				5FC07DB426BEFB4300B1971B /* ContentView.swift */,
 				5FC07DB626BF67CB00B1971B /* LabeledImage.swift */,
+				5FCF8BAE26C577E3002DA9F0 /* EEG.swift */,
 			);
 			path = BCILab;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 			files = (
 				5F524C4526BAD67C00DECD6E /* Error.swift in Sources */,
 				5F524C3926BAD67C00DECD6E /* Global.swift in Sources */,
+				5FCF8BAF26C577E3002DA9F0 /* EEG.swift in Sources */,
 				5F524C3F26BAD67C00DECD6E /* Sample.swift in Sources */,
 				5FC07DB526BEFB4300B1971B /* ContentView.swift in Sources */,
 				5F58BD3D26AC89F5003F5483 /* ImageCarousel.swift in Sources */,

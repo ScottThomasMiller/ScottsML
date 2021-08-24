@@ -23,8 +23,6 @@ struct BrainFlowInputParams: Encodable
     func json() -> String {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted.union(.withoutEscapingSlashes)
-        //encoder.outputFormatting = union([.secondDay, .priority])
-        //encoder.outputFormatting = .withoutEscapingSlashes
 
         guard let jsonParams = try? encoder.encode(self) else {
             print("Cannot convert BrainFlowInputParams to JSON")
